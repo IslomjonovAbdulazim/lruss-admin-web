@@ -1,24 +1,35 @@
-import { getRouteApi } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
-import { UsersDialogs } from './components/users-dialogs'
-import { UsersPrimaryButtons } from './components/users-primary-buttons'
-import { UsersProvider } from './components/users-provider'
-import { UsersTable } from './components/users-table'
-import { users } from './data/users'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { adminApi, type User } from '@/lib/api'
+import { toast } from 'sonner'
 
-const route = getRouteApi('/_authenticated/users/')
 
 export function Users() {
-  const search = route.useSearch()
-  const navigate = route.useNavigate()
+  const [users, setUsers] = useState<User[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const response = await adminApi.getUsers()
+        setUsers(response.data.users)
+      } catch (error: any) {
+        toast.error(error.response?.data?.detail || 'Failed to fetch users')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchUsers()
+  }, [])
 
   return (
-    <UsersProvider>
+    <>
       <Header fixed>
         <Search />
         <div className='ms-auto flex items-center space-x-4'>
@@ -33,17 +44,36 @@ export function Users() {
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>User List</h2>
             <p className='text-muted-foreground'>
-              Manage your users and their roles here.
+              Manage your users and their information here.
             </p>
           </div>
-          <UsersPrimaryButtons />
         </div>
-        <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12'>
-          <UsersTable data={users} search={search} navigate={navigate} />
-        </div>
+        {loading ? (
+          <div className="flex justify-center p-8">Loading users...</div>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {users.map((user) => (
+              <Card key={user.id}>
+                <CardHeader>
+                  <CardTitle className="flex justify-between items-center">
+                    <span>{user.first_name} {user.last_name}</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm"><strong>Phone:</strong> {user.phone_number}</p>
+                  <p className="text-sm"><strong>Telegram ID:</strong> {user.telegram_id}</p>
+                  {user.avatar_url && (
+                    <img src={`${import.meta.env.VITE_API_BASE_URL}${user.avatar_url}`} alt="Avatar" className="w-12 h-12 rounded-full mt-2" />
+                  )}
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Created: {new Date(user.created_at).toLocaleDateString()}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </Main>
-
-      <UsersDialogs />
-    </UsersProvider>
+    </>
   )
 }

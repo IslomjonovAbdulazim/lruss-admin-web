@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -16,8 +17,27 @@ import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { Overview } from './components/overview'
 import { RecentSales } from './components/recent-sales'
+import { adminApi, type StatsResponse } from '@/lib/api'
+import { toast } from 'sonner'
 
 export function Dashboard() {
+  const [stats, setStats] = useState<StatsResponse | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const response = await adminApi.getStats()
+        setStats(response.data)
+      } catch (error: any) {
+        toast.error(error.response?.data?.detail || 'Failed to fetch stats')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchStats()
+  }, [])
+
   return (
     <>
       {/* ===== Top Heading ===== */}
@@ -36,7 +56,7 @@ export function Dashboard() {
         <div className='mb-2 flex items-center justify-between space-y-2'>
           <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
           <div className='flex items-center space-x-2'>
-            <Button>Download</Button>
+            <Button onClick={() => window.location.reload()}>Refresh</Button>
           </div>
         </div>
         <Tabs
@@ -63,32 +83,7 @@ export function Dashboard() {
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                   <CardTitle className='text-sm font-medium'>
-                    Total Revenue
-                  </CardTitle>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth='2'
-                    className='text-muted-foreground h-4 w-4'
-                  >
-                    <path d='M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' />
-                  </svg>
-                </CardHeader>
-                <CardContent>
-                  <div className='text-2xl font-bold'>$45,231.89</div>
-                  <p className='text-muted-foreground text-xs'>
-                    +20.1% from last month
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>
-                    Subscriptions
+                    Total Users
                   </CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -106,15 +101,19 @@ export function Dashboard() {
                   </svg>
                 </CardHeader>
                 <CardContent>
-                  <div className='text-2xl font-bold'>+2350</div>
+                  <div className='text-2xl font-bold'>
+                    {loading ? '...' : stats?.total_users || 0}
+                  </div>
                   <p className='text-muted-foreground text-xs'>
-                    +180.1% from last month
+                    Total registered users
                   </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>Sales</CardTitle>
+                  <CardTitle className='text-sm font-medium'>
+                    Education Content
+                  </CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     viewBox='0 0 24 24'
@@ -125,21 +124,48 @@ export function Dashboard() {
                     strokeWidth='2'
                     className='text-muted-foreground h-4 w-4'
                   >
-                    <rect width='20' height='14' x='2' y='5' rx='2' />
-                    <path d='M2 10h20' />
+                    <path d='M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z' />
+                    <path d='M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z' />
                   </svg>
                 </CardHeader>
                 <CardContent>
-                  <div className='text-2xl font-bold'>+12,234</div>
+                  <div className='text-2xl font-bold'>
+                    {loading ? '...' : (stats?.total_modules || 0) + (stats?.total_lessons || 0) + (stats?.total_packs || 0)}
+                  </div>
                   <p className='text-muted-foreground text-xs'>
-                    +19% from last month
+                    {stats?.total_modules || 0} modules • {stats?.total_lessons || 0} lessons • {stats?.total_packs || 0} packs
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+                  <CardTitle className='text-sm font-medium'>Words & Grammar</CardTitle>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    stroke='currentColor'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    className='text-muted-foreground h-4 w-4'
+                  >
+                    <path d='M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20' />
+                  </svg>
+                </CardHeader>
+                <CardContent>
+                  <div className='text-2xl font-bold'>
+                    {loading ? '...' : (stats?.total_words || 0) + (stats?.total_grammar_questions || 0)}
+                  </div>
+                  <p className='text-muted-foreground text-xs'>
+                    {stats?.total_words || 0} words • {stats?.total_grammar_questions || 0} grammar questions
                   </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                   <CardTitle className='text-sm font-medium'>
-                    Active Now
+                    Active Users (7d)
                   </CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -155,9 +181,11 @@ export function Dashboard() {
                   </svg>
                 </CardHeader>
                 <CardContent>
-                  <div className='text-2xl font-bold'>+573</div>
+                  <div className='text-2xl font-bold'>
+                    {loading ? '...' : stats?.active_users_last_7_days || 0}
+                  </div>
                   <p className='text-muted-foreground text-xs'>
-                    +201 since last hour
+                    Active in last 7 days
                   </p>
                 </CardContent>
               </Card>
@@ -173,9 +201,9 @@ export function Dashboard() {
               </Card>
               <Card className='col-span-1 lg:col-span-3'>
                 <CardHeader>
-                  <CardTitle>Recent Sales</CardTitle>
+                  <CardTitle>Recent Activity</CardTitle>
                   <CardDescription>
-                    You made 265 sales this month.
+                    Latest user registrations and activity.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -193,26 +221,8 @@ export function Dashboard() {
 const topNav = [
   {
     title: 'Overview',
-    href: 'dashboard/overview',
+    href: '/',
     isActive: true,
     disabled: false,
-  },
-  {
-    title: 'Customers',
-    href: 'dashboard/customers',
-    isActive: false,
-    disabled: true,
-  },
-  {
-    title: 'Products',
-    href: 'dashboard/products',
-    isActive: false,
-    disabled: true,
-  },
-  {
-    title: 'Settings',
-    href: 'dashboard/settings',
-    isActive: false,
-    disabled: true,
   },
 ]
