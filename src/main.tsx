@@ -77,6 +77,21 @@ const router = createRouter({
   defaultPreloadStaleTime: 0,
 })
 
+// Add navigation event listeners for debugging
+router.subscribe('onBeforeLoad', (event) => {
+  console.log('🗣️ [ROUTER] Navigation starting to:', event.toLocation.pathname)
+  console.log('🗣️ [ROUTER] From:', event.fromLocation?.pathname)
+  console.log('🗣️ [ROUTER] Location:', event.toLocation)
+})
+
+router.subscribe('onLoad', (event) => {
+  console.log('✅ [ROUTER] Navigation loaded:', event.toLocation.pathname)
+})
+
+router.subscribe('onResolved', (event) => {
+  console.log('🎉 [ROUTER] Navigation resolved:', event.toLocation.pathname)
+})
+
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
   interface Register {

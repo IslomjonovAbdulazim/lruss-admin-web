@@ -239,7 +239,10 @@ export function PackDetail() {
       setFormData({})
       
       // Navigate to the topic editor after creation
+      console.log('✅ [GRAMMAR TOPIC CREATE] Topic created successfully, navigating to editor...')
+      console.log('✅ [GRAMMAR TOPIC CREATE] Navigation URL:', `/education/${moduleId}/${lessonId}/${packId}/topic`)
       setTimeout(() => {
+        console.log('🚀 [GRAMMAR TOPIC CREATE] Executing navigation...')
         navigate({ to: `/education/${moduleId}/${lessonId}/${packId}/topic` })
       }, 500)
     } catch (error: any) {
@@ -429,7 +432,11 @@ export function PackDetail() {
                   <Button 
                     size="sm" 
                     variant="outline" 
-                    onClick={() => navigate({ to: `/education/${moduleId}/${lessonId}/${packId}/topic` })}
+                    onClick={() => {
+                      console.log('🚀 [PACK DETAIL] Attempting to navigate to topic:', `/education/${moduleId}/${lessonId}/${packId}/topic`)
+                      console.log('🚀 [PACK DETAIL] Current params:', { moduleId, lessonId, packId })
+                      navigate({ to: `/education/${moduleId}/${lessonId}/${packId}/topic` })
+                    }}
                   >
                     <Edit className="h-3 w-3" />
                   </Button>

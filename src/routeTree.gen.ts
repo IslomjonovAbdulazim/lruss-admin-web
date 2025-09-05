@@ -31,6 +31,7 @@ import { Route as AuthenticatedEducationModuleIdIndexRouteImport } from './route
 import { Route as AuthenticatedEducationModuleIdLessonIdRouteImport } from './routes/_authenticated/education/$moduleId/$lessonId'
 import { Route as AuthenticatedEducationModuleIdLessonIdIndexRouteImport } from './routes/_authenticated/education/$moduleId/$lessonId/index'
 import { Route as AuthenticatedEducationModuleIdLessonIdPackIdRouteImport } from './routes/_authenticated/education/$moduleId/$lessonId/$packId'
+import { Route as AuthenticatedEducationModuleIdLessonIdPackIdIndexRouteImport } from './routes/_authenticated/education/$moduleId/$lessonId/$packId/index'
 import { Route as AuthenticatedEducationModuleIdLessonIdPackIdTopicRouteImport } from './routes/_authenticated/education/$moduleId/$lessonId/$packId/topic'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -154,6 +155,12 @@ const AuthenticatedEducationModuleIdLessonIdPackIdRoute =
     path: '/$packId',
     getParentRoute: () => AuthenticatedEducationModuleIdLessonIdRoute,
   } as any)
+const AuthenticatedEducationModuleIdLessonIdPackIdIndexRoute =
+  AuthenticatedEducationModuleIdLessonIdPackIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedEducationModuleIdLessonIdPackIdRoute,
+  } as any)
 const AuthenticatedEducationModuleIdLessonIdPackIdTopicRoute =
   AuthenticatedEducationModuleIdLessonIdPackIdTopicRouteImport.update({
     id: '/topic',
@@ -184,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/education/$moduleId/$lessonId/$packId': typeof AuthenticatedEducationModuleIdLessonIdPackIdRouteWithChildren
   '/education/$moduleId/$lessonId/': typeof AuthenticatedEducationModuleIdLessonIdIndexRoute
   '/education/$moduleId/$lessonId/$packId/topic': typeof AuthenticatedEducationModuleIdLessonIdPackIdTopicRoute
+  '/education/$moduleId/$lessonId/$packId/': typeof AuthenticatedEducationModuleIdLessonIdPackIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/sign-in': typeof authSignInRoute
@@ -201,9 +209,9 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
   '/education/$moduleId': typeof AuthenticatedEducationModuleIdIndexRoute
-  '/education/$moduleId/$lessonId/$packId': typeof AuthenticatedEducationModuleIdLessonIdPackIdRouteWithChildren
   '/education/$moduleId/$lessonId': typeof AuthenticatedEducationModuleIdLessonIdIndexRoute
   '/education/$moduleId/$lessonId/$packId/topic': typeof AuthenticatedEducationModuleIdLessonIdPackIdTopicRoute
+  '/education/$moduleId/$lessonId/$packId': typeof AuthenticatedEducationModuleIdLessonIdPackIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -230,6 +238,7 @@ export interface FileRoutesById {
   '/_authenticated/education/$moduleId/$lessonId/$packId': typeof AuthenticatedEducationModuleIdLessonIdPackIdRouteWithChildren
   '/_authenticated/education/$moduleId/$lessonId/': typeof AuthenticatedEducationModuleIdLessonIdIndexRoute
   '/_authenticated/education/$moduleId/$lessonId/$packId/topic': typeof AuthenticatedEducationModuleIdLessonIdPackIdTopicRoute
+  '/_authenticated/education/$moduleId/$lessonId/$packId/': typeof AuthenticatedEducationModuleIdLessonIdPackIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -256,6 +265,7 @@ export interface FileRouteTypes {
     | '/education/$moduleId/$lessonId/$packId'
     | '/education/$moduleId/$lessonId/'
     | '/education/$moduleId/$lessonId/$packId/topic'
+    | '/education/$moduleId/$lessonId/$packId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/sign-in'
@@ -273,9 +283,9 @@ export interface FileRouteTypes {
     | '/settings'
     | '/users'
     | '/education/$moduleId'
-    | '/education/$moduleId/$lessonId/$packId'
     | '/education/$moduleId/$lessonId'
     | '/education/$moduleId/$lessonId/$packId/topic'
+    | '/education/$moduleId/$lessonId/$packId'
   id:
     | '__root__'
     | '/_authenticated'
@@ -301,6 +311,7 @@ export interface FileRouteTypes {
     | '/_authenticated/education/$moduleId/$lessonId/$packId'
     | '/_authenticated/education/$moduleId/$lessonId/'
     | '/_authenticated/education/$moduleId/$lessonId/$packId/topic'
+    | '/_authenticated/education/$moduleId/$lessonId/$packId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -469,6 +480,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEducationModuleIdLessonIdPackIdRouteImport
       parentRoute: typeof AuthenticatedEducationModuleIdLessonIdRoute
     }
+    '/_authenticated/education/$moduleId/$lessonId/$packId/': {
+      id: '/_authenticated/education/$moduleId/$lessonId/$packId/'
+      path: '/'
+      fullPath: '/education/$moduleId/$lessonId/$packId/'
+      preLoaderRoute: typeof AuthenticatedEducationModuleIdLessonIdPackIdIndexRouteImport
+      parentRoute: typeof AuthenticatedEducationModuleIdLessonIdPackIdRoute
+    }
     '/_authenticated/education/$moduleId/$lessonId/$packId/topic': {
       id: '/_authenticated/education/$moduleId/$lessonId/$packId/topic'
       path: '/topic'
@@ -499,12 +517,15 @@ const AuthenticatedSettingsRouteRouteWithChildren =
 
 interface AuthenticatedEducationModuleIdLessonIdPackIdRouteChildren {
   AuthenticatedEducationModuleIdLessonIdPackIdTopicRoute: typeof AuthenticatedEducationModuleIdLessonIdPackIdTopicRoute
+  AuthenticatedEducationModuleIdLessonIdPackIdIndexRoute: typeof AuthenticatedEducationModuleIdLessonIdPackIdIndexRoute
 }
 
 const AuthenticatedEducationModuleIdLessonIdPackIdRouteChildren: AuthenticatedEducationModuleIdLessonIdPackIdRouteChildren =
   {
     AuthenticatedEducationModuleIdLessonIdPackIdTopicRoute:
       AuthenticatedEducationModuleIdLessonIdPackIdTopicRoute,
+    AuthenticatedEducationModuleIdLessonIdPackIdIndexRoute:
+      AuthenticatedEducationModuleIdLessonIdPackIdIndexRoute,
   }
 
 const AuthenticatedEducationModuleIdLessonIdPackIdRouteWithChildren =

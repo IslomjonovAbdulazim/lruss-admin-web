@@ -14,13 +14,17 @@ function LessonLayout() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    console.log('🏛️ [LESSON LAYOUT] Component mounted with params:', { moduleId, lessonId })
+    console.log('🏛️ [LESSON LAYOUT] Current route:', window.location.pathname)
     fetchLesson()
   }, [moduleId, lessonId])
 
   const fetchLesson = async () => {
     try {
+      console.log('🔍 [LESSON LAYOUT] Fetching lesson data for:', lessonId)
       setLoading(true)
       const response = await educationApi.getLessonWithPacks(parseInt(lessonId as string))
+      console.log('✅ [LESSON LAYOUT] Lesson data fetched:', response.data)
       setLesson(response.data)
       
       const moduleResponse = await educationApi.getModuleWithLessons(parseInt(moduleId as string))

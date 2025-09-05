@@ -3,13 +3,15 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { MarkdownEditor } from '@/components/markdown-editor'
 import { educationApi, grammarTopicsApi, type Pack, type GrammarTopic } from '@/lib/api'
 import { toast } from 'sonner'
-import { ArrowLeft, Save, Edit, Trash2 } from 'lucide-react'
+import { ArrowLeft, Save, Edit, Trash2, Eye, FileText } from 'lucide-react'
 import { useNavigate, useParams } from '@tanstack/react-router'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 export function GrammarTopicPage() {
   const navigate = useNavigate()
@@ -25,13 +27,17 @@ export function GrammarTopicPage() {
   })
 
   useEffect(() => {
+    console.log('🚀 [GRAMMAR TOPIC] Component mounted with params:', { moduleId, lessonId, packId })
+    console.log('🚀 [GRAMMAR TOPIC] Current route:', window.location.pathname)
     fetchData()
   }, [packId])
 
   const fetchData = async () => {
     try {
+      console.log('🔍 [GRAMMAR TOPIC] Fetching data for pack:', packId)
       setLoading(true)
       const packResponse = await educationApi.getPack(parseInt(packId as string))
+      console.log('✅ [GRAMMAR TOPIC] Pack data fetched:', packResponse.data)
       setPack(packResponse.data)
       
       try {
@@ -201,11 +207,10 @@ export function GrammarTopicPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="markdown_content">Educational Content (Markdown)</Label>
-                <Textarea
-                  id="markdown_content"
+                <Label htmlFor="markdown_content">Educational Content</Label>
+                <MarkdownEditor
                   value={formData.markdown_text}
-                  onChange={(e) => setFormData({ ...formData, markdown_text: e.target.value })}
+                  onChange={(value) => setFormData({ ...formData, markdown_text: value })}
                   placeholder={`# ${pack?.title || 'Grammar Topic'}
 
 ## Overview
@@ -222,11 +227,9 @@ Explain the main grammar rule here...
 
 ## Summary
 Key takeaways from this lesson`}
-                  className="min-h-[400px] font-mono text-sm resize-none"
+                  height={500}
+                  preview="live"
                 />
-                <p className="text-xs text-muted-foreground">
-                  Use markdown syntax to format your educational content
-                </p>
               </div>
             </div>
           </Card>
@@ -235,45 +238,86 @@ Key takeaways from this lesson`}
             <Button variant="outline" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button onClick={handleSave} disabled={saving || !formData.video_url}>
+            <Button onClick={handleSave} disabled={saving || !formData.video_url || !formData.markdown_text.trim()}>
               <Save className="h-4 w-4 mr-2" />
               {saving ? 'Saving...' : topic ? 'Update Topic' : 'Create Topic'}
             </Button>
           </div>
         </div>
       ) : (
-        <div className="space-y-6">
-          <Card className="p-6">
-            <div className="space-y-4">
-              <div>
-                <Label className="text-sm font-medium">Video URL</Label>
-                <p className="mt-1 text-sm text-muted-foreground break-all">{topic.video_url}</p>
-              </div>
-              
-              <div>
-                <Label className="text-sm font-medium">Educational Content</Label>
-                <div className="mt-2 border rounded-md p-4 bg-gray-50 max-h-96 overflow-y-auto">
-                  <div className="prose prose-sm max-w-none">
+        <Tabs defaultValue="preview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="preview" className="flex items-center gap-2">
+              <Eye className="h-4 w-4" />
+              Preview
+            </TabsTrigger>
+            <TabsTrigger value="raw" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Raw Content
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="preview" className="space-y-6">
+            <Card className="p-6">
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">Video URL</Label>
+                  <p className="mt-1 text-sm text-muted-foreground break-all">{topic.video_url}</p>
+                </div>
+                
+                <div>
+                  <Label className="text-sm font-medium">Educational Content</Label>
+                  <div className="mt-2 border rounded-md p-6 bg-background">
                     {topic.markdown_text ? (
-                      <pre className="whitespace-pre-wrap font-sans">{topic.markdown_text}</pre>
+                      <div className="prose prose-sm max-w-none dark:prose-invert">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          {topic.markdown_text}
+                        </ReactMarkdown>
+                      </div>
                     ) : (
-                      <p className="text-muted-foreground italic">No content added yet</p>
+                      <p className="text-muted-foreground italic text-center py-8">No content added yet</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="text-xs text-muted-foreground pt-4 border-t">
+                  <div className="flex items-center justify-between">
+                    <span>Created: {new Date(topic.created_at).toLocaleString()}</span>
+                    {topic.updated_at !== topic.created_at && (
+                      <span>Updated: {new Date(topic.updated_at).toLocaleString()}</span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-4 mt-2">
+                    <span>{topic.markdown_text?.length || 0} characters</span>
+                    <span>{(topic.markdown_text?.split(/\s+/).filter(word => word.length > 0).length || 0)} words</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="raw" className="space-y-6">
+            <Card className="p-6">
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">Video URL</Label>
+                  <p className="mt-1 text-sm text-muted-foreground break-all">{topic.video_url}</p>
+                </div>
+                
+                <div>
+                  <Label className="text-sm font-medium">Raw Markdown Content</Label>
+                  <div className="mt-2 border rounded-md p-4 bg-muted/30 max-h-96 overflow-y-auto">
+                    {topic.markdown_text ? (
+                      <pre className="whitespace-pre-wrap font-mono text-sm">{topic.markdown_text}</pre>
+                    ) : (
+                      <p className="text-muted-foreground italic text-center py-8">No content added yet</p>
                     )}
                   </div>
                 </div>
               </div>
-
-              <div className="text-xs text-muted-foreground">
-                Created: {new Date(topic.created_at).toLocaleString()}
-                {topic.updated_at !== topic.created_at && (
-                  <span className="ml-4">
-                    Updated: {new Date(topic.updated_at).toLocaleString()}
-                  </span>
-                )}
-              </div>
-            </div>
-          </Card>
-        </div>
+            </Card>
+          </TabsContent>
+        </Tabs>
       )}
     </div>
   )

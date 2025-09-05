@@ -28,6 +28,82 @@
     cursor: pointer;
   }
 
+  /* Markdown Editor Styles */
+  .w-md-editor {
+    background-color: transparent !important;
+  }
+  
+  .w-md-editor.w-md-editor-focus {
+    border-color: var(--ring) !important;
+    box-shadow: 0 0 0 2px var(--ring) !important;
+  }
+  
+  .w-md-editor-text-textarea,
+  .w-md-editor-preview {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: var(--foreground) !important;
+    background-color: var(--background) !important;
+  }
+  
+  .w-md-editor-preview {
+    padding: 16px !important;
+  }
+  
+  .w-md-editor-preview h1 {
+    @apply text-2xl font-bold mt-6 mb-4 first:mt-0;
+  }
+  
+  .w-md-editor-preview h2 {
+    @apply text-xl font-semibold mt-5 mb-3 first:mt-0;
+  }
+  
+  .w-md-editor-preview h3 {
+    @apply text-lg font-medium mt-4 mb-2 first:mt-0;
+  }
+  
+  .w-md-editor-preview p {
+    @apply mb-4 last:mb-0;
+  }
+  
+  .w-md-editor-preview ul,
+  .w-md-editor-preview ol {
+    @apply mb-4 pl-6;
+  }
+  
+  .w-md-editor-preview li {
+    @apply mb-1;
+  }
+  
+  .w-md-editor-preview blockquote {
+    @apply border-l-4 border-border pl-4 py-2 my-4 bg-muted/30 italic;
+  }
+  
+  .w-md-editor-preview code {
+    @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+  
+  .w-md-editor-preview pre {
+    @apply bg-muted p-4 rounded-md overflow-x-auto my-4;
+  }
+  
+  .w-md-editor-preview pre code {
+    @apply bg-transparent p-0;
+  }
+  
+  .w-md-editor-preview table {
+    @apply w-full border-collapse border border-border my-4;
+  }
+  
+  .w-md-editor-preview th,
+  .w-md-editor-preview td {
+    @apply border border-border px-3 py-2 text-left;
+  }
+  
+  .w-md-editor-preview th {
+    @apply bg-muted font-medium;
+  }
+
   /* Prevent focus zoom on mobile devices */
   @media screen and (max-width: 767px) {
     input,

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { useNavigate, Link } from '@tanstack/react-router'
 import {
   Card,
   CardContent,
@@ -21,6 +22,7 @@ import { adminApi, type StatsResponse } from '@/lib/api'
 import { toast } from 'sonner'
 
 export function Dashboard() {
+  const navigate = useNavigate()
   const [stats, setStats] = useState<StatsResponse | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -56,6 +58,18 @@ export function Dashboard() {
         <div className='mb-2 flex items-center justify-between space-y-2'>
           <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
           <div className='flex items-center space-x-2'>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                console.log('🧪 [DASHBOARD] Testing navigation to topic route...')
+                navigate({ to: '/education/$moduleId/$lessonId/$packId/topic', params: { moduleId: '1', lessonId: '2', packId: '1' } })
+              }}
+            >
+              🧪 Test Topic Route
+            </Button>
+            <Link to='/education/$moduleId/$lessonId/$packId/topic' params={{ moduleId: '1', lessonId: '2', packId: '1' }}>
+              <Button variant="outline">🔗 Link to Topic</Button>
+            </Link>
             <Button onClick={() => window.location.reload()}>Refresh</Button>
           </div>
         </div>

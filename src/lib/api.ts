@@ -60,6 +60,11 @@ export interface User {
   updated_at: string
 }
 
+export interface UserWithSubscription extends User {
+  has_active_subscription: boolean
+  subscription_end_date?: string
+}
+
 export interface Module {
   id: number
   title: string
