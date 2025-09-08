@@ -269,8 +269,29 @@ Key takeaways from this lesson`}
                   <Label className="text-sm font-medium">Образовательный контент</Label>
                   <div className="mt-2 border rounded-md p-6 bg-background">
                     {topic.markdown_text ? (
-                      <div className="prose prose-sm max-w-none dark:prose-invert">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      <div className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-ul:text-foreground prose-ol:text-foreground prose-li:text-foreground prose-blockquote:text-muted-foreground prose-code:text-foreground prose-pre:text-foreground">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]} components={{
+                          h1: ({children}) => <h1 className="text-2xl font-bold mb-4 text-foreground border-b border-border pb-2">{children}</h1>,
+                          h2: ({children}) => <h2 className="text-xl font-semibold mb-3 mt-6 text-foreground">{children}</h2>,
+                          h3: ({children}) => <h3 className="text-lg font-semibold mb-2 mt-4 text-foreground">{children}</h3>,
+                          h4: ({children}) => <h4 className="text-base font-semibold mb-2 mt-3 text-foreground">{children}</h4>,
+                          p: ({children}) => <p className="mb-3 text-foreground leading-relaxed">{children}</p>,
+                          ul: ({children}) => <ul className="mb-4 ml-4 space-y-1 text-foreground list-disc">{children}</ul>,
+                          ol: ({children}) => <ol className="mb-4 ml-4 space-y-1 text-foreground list-decimal">{children}</ol>,
+                          li: ({children}) => <li className="text-foreground leading-relaxed ml-1">{children}</li>,
+                          strong: ({children}) => <strong className="font-bold text-foreground">{children}</strong>,
+                          em: ({children}) => <em className="italic text-foreground">{children}</em>,
+                          code: ({children}) => <code className="bg-muted px-2 py-1 rounded text-sm font-mono text-foreground border border-border">{children}</code>,
+                          pre: ({children}) => <pre className="bg-muted border border-border p-4 rounded-md overflow-x-auto mb-4 text-sm text-foreground">{children}</pre>,
+                          blockquote: ({children}) => <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground mb-4 bg-muted/30 py-2">{children}</blockquote>,
+                          table: ({children}) => <div className="overflow-x-auto mb-4"><table className="min-w-full border border-border">{children}</table></div>,
+                          thead: ({children}) => <thead className="bg-muted">{children}</thead>,
+                          tbody: ({children}) => <tbody>{children}</tbody>,
+                          tr: ({children}) => <tr className="border-b border-border">{children}</tr>,
+                          th: ({children}) => <th className="border border-border px-4 py-2 text-left font-semibold text-foreground">{children}</th>,
+                          td: ({children}) => <td className="border border-border px-4 py-2 text-foreground">{children}</td>,
+                          hr: () => <hr className="my-6 border-t border-border" />
+                        }}>
                           {topic.markdown_text}
                         </ReactMarkdown>
                       </div>

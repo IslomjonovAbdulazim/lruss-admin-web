@@ -23,6 +23,7 @@ import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authen
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedEducationIndexRouteImport } from './routes/_authenticated/education/index'
+import { Route as AuthenticatedSettingsBusinessRouteImport } from './routes/_authenticated/settings/business'
 import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 import { Route as AuthenticatedEducationModuleIdRouteImport } from './routes/_authenticated/education/$moduleId'
@@ -106,6 +107,12 @@ const AuthenticatedEducationIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedEducationRoute,
   } as any)
+const AuthenticatedSettingsBusinessRoute =
+  AuthenticatedSettingsBusinessRouteImport.update({
+    id: '/business',
+    path: '/business',
+    getParentRoute: () => AuthenticatedSettingsRouteRoute,
+  } as any)
 const AuthenticatedSettingsAppearanceRoute =
   AuthenticatedSettingsAppearanceRouteImport.update({
     id: '/appearance',
@@ -175,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/education/$moduleId': typeof AuthenticatedEducationModuleIdRouteWithChildren
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
+  '/settings/business': typeof AuthenticatedSettingsBusinessRoute
   '/education/': typeof AuthenticatedEducationIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -196,6 +204,7 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
+  '/settings/business': typeof AuthenticatedSettingsBusinessRoute
   '/education': typeof AuthenticatedEducationIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -220,6 +229,7 @@ export interface FileRoutesById {
   '/_authenticated/education/$moduleId': typeof AuthenticatedEducationModuleIdRouteWithChildren
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
+  '/_authenticated/settings/business': typeof AuthenticatedSettingsBusinessRoute
   '/_authenticated/education/': typeof AuthenticatedEducationIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
@@ -246,6 +256,7 @@ export interface FileRouteTypes {
     | '/education/$moduleId'
     | '/errors/$error'
     | '/settings/appearance'
+    | '/settings/business'
     | '/education/'
     | '/settings/'
     | '/users'
@@ -267,6 +278,7 @@ export interface FileRouteTypes {
     | '/'
     | '/errors/$error'
     | '/settings/appearance'
+    | '/settings/business'
     | '/education'
     | '/settings'
     | '/users'
@@ -290,6 +302,7 @@ export interface FileRouteTypes {
     | '/_authenticated/education/$moduleId'
     | '/_authenticated/errors/$error'
     | '/_authenticated/settings/appearance'
+    | '/_authenticated/settings/business'
     | '/_authenticated/education/'
     | '/_authenticated/settings/'
     | '/_authenticated/users/'
@@ -411,6 +424,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEducationIndexRouteImport
       parentRoute: typeof AuthenticatedEducationRoute
     }
+    '/_authenticated/settings/business': {
+      id: '/_authenticated/settings/business'
+      path: '/business'
+      fullPath: '/settings/business'
+      preLoaderRoute: typeof AuthenticatedSettingsBusinessRouteImport
+      parentRoute: typeof AuthenticatedSettingsRouteRoute
+    }
     '/_authenticated/settings/appearance': {
       id: '/_authenticated/settings/appearance'
       path: '/appearance'
@@ -479,12 +499,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedSettingsRouteRouteChildren {
   AuthenticatedSettingsAppearanceRoute: typeof AuthenticatedSettingsAppearanceRoute
+  AuthenticatedSettingsBusinessRoute: typeof AuthenticatedSettingsBusinessRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
 }
 
 const AuthenticatedSettingsRouteRouteChildren: AuthenticatedSettingsRouteRouteChildren =
   {
     AuthenticatedSettingsAppearanceRoute: AuthenticatedSettingsAppearanceRoute,
+    AuthenticatedSettingsBusinessRoute: AuthenticatedSettingsBusinessRoute,
     AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   }
 

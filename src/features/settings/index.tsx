@@ -1,5 +1,5 @@
 import { Outlet } from '@tanstack/react-router'
-import { Palette } from 'lucide-react'
+import { Palette, Building2 } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
@@ -13,6 +13,11 @@ const sidebarNavItems = [
     title: 'Внешний вид',
     href: '/settings/appearance',
     icon: <Palette size={18} />,
+  },
+  {
+    title: 'Бизнес-профиль',
+    href: '/settings/business',
+    icon: <Building2 size={18} />,
   },
 ]
 

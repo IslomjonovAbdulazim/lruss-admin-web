@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import MDEditor from '@uiw/react-md-editor'
+import remarkGfm from 'remark-gfm'
+import { useTheme } from '@/context/theme-provider'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
@@ -33,7 +35,43 @@ export function MarkdownEditor({
   height = 400,
   preview = 'live'
 }: MarkdownEditorProps) {
+  const { theme } = useTheme()
   const [previewMode, setPreviewMode] = useState(preview)
+  const [colorMode, setColorMode] = useState<'light' | 'dark'>('light')
+
+  useEffect(() => {
+    const updateColorMode = () => {
+      if (theme === 'dark') {
+        setColorMode('dark')
+      } else if (theme === 'light') {
+        setColorMode('light')
+      } else {
+        // System theme - check actual applied theme
+        const isDark = document.documentElement.classList.contains('dark')
+        setColorMode(isDark ? 'dark' : 'light')
+      }
+    }
+
+    updateColorMode()
+
+    // Listen for system theme changes when using 'system' theme
+    if (theme === 'system') {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+            updateColorMode()
+          }
+        })
+      })
+
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class']
+      })
+
+      return () => observer.disconnect()
+    }
+  }, [theme])
 
   const insertText = (before: string, after: string = '', placeholder: string = '') => {
     const textarea = document.querySelector('.w-md-editor-text-textarea') as HTMLTextAreaElement
@@ -274,13 +312,38 @@ Russian and Uzbek speakers often struggle with TH sounds.
           onChange={(val) => onChange(val || '')}
           preview={previewMode}
           height={height}
-          data-color-mode="light"
+          data-color-mode={colorMode}
           hideToolbar
           visibleDragbar={false}
           textareaProps={{
             placeholder,
             className: 'font-mono text-sm',
             style: { fontSize: '14px', lineHeight: '1.5' }
+          }}
+          previewOptions={{
+            remarkPlugins: [remarkGfm],
+            components: {
+              h1: ({children}) => <h1 className="text-2xl font-bold mb-4 text-foreground border-b border-border pb-2">{children}</h1>,
+              h2: ({children}) => <h2 className="text-xl font-semibold mb-3 mt-6 text-foreground">{children}</h2>,
+              h3: ({children}) => <h3 className="text-lg font-semibold mb-2 mt-4 text-foreground">{children}</h3>,
+              h4: ({children}) => <h4 className="text-base font-semibold mb-2 mt-3 text-foreground">{children}</h4>,
+              p: ({children}) => <p className="mb-3 text-foreground leading-relaxed">{children}</p>,
+              ul: ({children}) => <ul className="mb-4 ml-4 space-y-1 text-foreground list-disc">{children}</ul>,
+              ol: ({children}) => <ol className="mb-4 ml-4 space-y-1 text-foreground list-decimal">{children}</ol>,
+              li: ({children}) => <li className="text-foreground leading-relaxed ml-1">{children}</li>,
+              strong: ({children}) => <strong className="font-bold text-foreground">{children}</strong>,
+              em: ({children}) => <em className="italic text-foreground">{children}</em>,
+              code: ({children}) => <code className="bg-muted px-2 py-1 rounded text-sm font-mono text-foreground border border-border">{children}</code>,
+              pre: ({children}) => <pre className="bg-muted border border-border p-4 rounded-md overflow-x-auto mb-4 text-sm text-foreground">{children}</pre>,
+              blockquote: ({children}) => <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground mb-4 bg-muted/30 py-2">{children}</blockquote>,
+              table: ({children}) => <div className="overflow-x-auto mb-4"><table className="min-w-full border border-border">{children}</table></div>,
+              thead: ({children}) => <thead className="bg-muted">{children}</thead>,
+              tbody: ({children}) => <tbody>{children}</tbody>,
+              tr: ({children}) => <tr className="border-b border-border">{children}</tr>,
+              th: ({children}) => <th className="border border-border px-4 py-2 text-left font-semibold text-foreground">{children}</th>,
+              td: ({children}) => <td className="border border-border px-4 py-2 text-foreground">{children}</td>,
+              hr: () => <hr className="my-6 border-t border-border" />
+            }
           }}
         />
       </div>
