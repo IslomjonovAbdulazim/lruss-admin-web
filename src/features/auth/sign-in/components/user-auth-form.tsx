@@ -23,12 +23,12 @@ import { PasswordInput } from '@/components/password-input'
 const formSchema = z.object({
   phone_number: z
     .string()
-    .min(1, 'Please enter your phone number')
-    .regex(/^\+\d{10,15}$/, 'Please enter a valid phone number with country code'),
+    .min(1, 'Введите номер телефона')
+    .regex(/^\+\d{10,15}$/, 'Введите корректный номер телефона с кодом страны'),
   password: z
     .string()
-    .min(1, 'Please enter your password')
-    .min(6, 'Password must be at least 6 characters long'),
+    .min(1, 'Введите пароль')
+    .min(6, 'Пароль должен содержать минимум 6 символов'),
 })
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {
@@ -75,7 +75,7 @@ export function UserAuthForm({
       auth.setUser(user)
       auth.setAccessToken(access_token)
 
-      toast.success('Welcome back!')
+      toast.success('Добро пожаловать!')
 
       // Redirect to the stored location or default to dashboard
       const targetPath = redirectTo || '/'
@@ -84,7 +84,7 @@ export function UserAuthForm({
       toast.error(
         error.response?.data?.detail || 
         error.message || 
-        'Login failed. Please check your credentials.'
+        'Ошибка входа. Проверьте правильность данных.'
       )
     } finally {
       setIsLoading(false)
@@ -103,7 +103,7 @@ export function UserAuthForm({
           name='phone_number'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Phone Number</FormLabel>
+              <FormLabel>Номер телефона</FormLabel>
               <FormControl>
                 <Input placeholder='+998990330919' {...field} />
               </FormControl>
@@ -116,7 +116,7 @@ export function UserAuthForm({
           name='password'
           render={({ field }) => (
             <FormItem className='relative'>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Пароль</FormLabel>
               <FormControl>
                 <PasswordInput placeholder='********' {...field} />
               </FormControl>
@@ -126,7 +126,7 @@ export function UserAuthForm({
         />
         <Button className='mt-2' disabled={isLoading}>
           {isLoading ? <Loader2 className='animate-spin' /> : <LogIn />}
-          Sign in
+          Войти
         </Button>
 
       </form>

@@ -79,14 +79,14 @@ export function NavUser({ user }: NavUserProps) {
                 <DropdownMenuItem asChild>
                   <Link to='/settings'>
                     <BadgeCheck />
-                    Settings
+                    Настройки
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => setOpen(true)}>
                 <LogOut />
-                Sign out
+                Выйти
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

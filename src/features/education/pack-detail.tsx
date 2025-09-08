@@ -78,7 +78,7 @@ export function PackDetail() {
       }
     } catch (error: any) {
       const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to fetch pack details'
-      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to fetch pack details')
+      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Не удалось загрузить детали пакета')
       navigate({ to: `/education/${moduleId}/${lessonId}` })
     } finally {
       setLoading(false)
@@ -97,7 +97,7 @@ export function PackDetail() {
       const response = await quizApi.createWord(requestData)
       console.log('💾 [CREATE WORD] Response:', response.data)
       
-      toast.success('Word created successfully')
+      toast.success('Слово успешно создано')
       setIsCreateDialogOpen(false)
       setFormData({})
       fetchPackDetail()
@@ -107,7 +107,7 @@ export function PackDetail() {
       console.error('🔴 [CREATE WORD] Error data:', error.response?.data)
       console.error('🔴 [CREATE WORD] Status code:', error.response?.status)
       
-      let errorMessage = 'Failed to create word'
+      let errorMessage = 'Не удалось создать слово'
       if (error.response?.data) {
         if (typeof error.response.data === 'string') {
           errorMessage = error.response.data
@@ -131,25 +131,25 @@ export function PackDetail() {
         uz_text: formData.uz_text
       })
       
-      toast.success('Word updated successfully')
+      toast.success('Слово успешно обновлено')
       setIsEditDialogOpen(false)
       setEditingWord(null)
       setFormData({})
       fetchPackDetail()
     } catch (error: any) {
       const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to update word'
-      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to update word')
+      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Не удалось обновить слово')
     }
   }
 
   const deleteWord = async (wordId: number) => {
     try {
       await quizApi.deleteWord(wordId)
-      toast.success('Word deleted successfully')
+      toast.success('Слово успешно удалено')
       fetchPackDetail()
     } catch (error: any) {
       const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to delete word'
-      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to delete word')
+      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Не удалось удалить слово')
     }
   }
 
@@ -158,14 +158,14 @@ export function PackDetail() {
     try {
       setUploading(true)
       await quizApi.uploadWordAudio(audioUploadWord!.id, audioFile!)
-      toast.success('Audio uploaded successfully')
+      toast.success('Аудио успешно загружено')
       setIsAudioDialogOpen(false)
       setAudioUploadWord(null)
       setAudioFile(null)
       fetchPackDetail()
     } catch (error: any) {
       const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to upload audio'
-      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to upload audio')
+      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Не удалось загрузить аудио')
     } finally {
       setUploading(false)
     }
@@ -234,7 +234,7 @@ export function PackDetail() {
       const response = await grammarTopicsApi.create(requestData)
       console.log('🔥 [GRAMMAR TOPIC CREATE] Response:', response.data)
       
-      toast.success('Grammar topic created! Redirecting to editor...')
+      toast.success('Тема по грамматике создана! Переходим к редактору...')
       setIsCreateTopicDialogOpen(false)
       setFormData({})
       
@@ -251,7 +251,7 @@ export function PackDetail() {
       console.error('🔴 [GRAMMAR TOPIC CREATE] Error data:', error.response?.data)
       console.error('🔴 [GRAMMAR TOPIC CREATE] Status code:', error.response?.status)
       
-      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to create topic'
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Не удалось создать тему'
       toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to create topic')
     } finally {
       setCreatingTopic(false)
@@ -298,12 +298,12 @@ export function PackDetail() {
       }
       
       await quizApi.createGrammar(questionData)
-      toast.success('Grammar question created successfully')
+      toast.success('Вопрос по грамматике успешно создан')
       setIsQuestionDialogOpen(false)
       setFormData({})
       fetchPackDetail()
     } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to create question'
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Не удалось создать вопрос'
       toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to create question')
     }
   }
@@ -337,13 +337,13 @@ export function PackDetail() {
       }
       
       await quizApi.updateGrammar(editingGrammarQuestion!.id, questionData)
-      toast.success('Grammar question updated successfully')
+      toast.success('Вопрос по грамматике успешно обновлён')
       setIsEditQuestionDialogOpen(false)
       setEditingGrammarQuestion(null)
       setFormData({})
       fetchPackDetail()
     } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to update question'
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Не удалось обновить вопрос'
       toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to update question')
     }
   }
@@ -351,10 +351,10 @@ export function PackDetail() {
   const deleteGrammarQuestion = async (questionId: number) => {
     try {
       await quizApi.deleteGrammar(questionId)
-      toast.success('Grammar question deleted successfully')
+      toast.success('Вопрос по грамматике успешно удалён')
       fetchPackDetail()
     } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to delete question'
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Не удалось удалить вопрос'
       toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to delete question')
     }
   }
@@ -363,7 +363,7 @@ export function PackDetail() {
     const file = e.target.files?.[0]
     if (file) {
       if (file.size > 1024 * 1024) {
-        toast.error('Audio file must be less than 1MB')
+        toast.error('Аудиофайл должен быть меньше 1МБ')
         return
       }
       const allowedTypes = ['audio/mp3', 'audio/wav', 'audio/ogg', 'audio/m4a', 'audio/mpeg']
@@ -371,7 +371,7 @@ export function PackDetail() {
       const hasValidExtension = ['.mp3', '.wav', '.ogg', '.m4a'].some(ext => fileName.endsWith(ext))
       
       if (!allowedTypes.includes(file.type) && !hasValidExtension) {
-        toast.error('Only MP3, WAV, OGG, M4A files are supported')
+        toast.error('Поддерживаются только файлы MP3, WAV, OGG, M4A')
         return
       }
       setAudioFile(file)
@@ -379,11 +379,11 @@ export function PackDetail() {
   }
 
   if (loading) {
-    return <div className="flex justify-center p-8">Loading pack details...</div>
+    return <div className="flex justify-center p-8">Загрузка деталей пакета...</div>
   }
 
   if (!pack) {
-    return <div className="text-center p-8">Pack not found</div>
+    return <div className="text-center p-8">Пакет не найден</div>
   }
 
   if (pack.type === 'grammar') {
@@ -392,24 +392,24 @@ export function PackDetail() {
         <div className='mb-4 flex items-center justify-between'>
           <div>
             <h1 className='text-2xl font-bold tracking-tight'>{pack.title}</h1>
-            <p className='text-muted-foreground'>Grammar Pack • {grammarQuestions.length} questions</p>
+            <p className='text-muted-foreground'>Пакет грамматики • {grammarQuestions.length} вопросов</p>
           </div>
           <Button variant="outline" onClick={() => navigate({ to: `/education/${moduleId}/${lessonId}` })}>
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Packs
+            Назад к пакетам
           </Button>
         </div>
 
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-lg font-medium">Grammar Topic</h3>
+            <h3 className="text-lg font-medium">Тема грамматики</h3>
             {!grammarTopic && (
               <Button size="sm" onClick={() => {
                 setFormData({ video_url: '' })
                 setIsCreateTopicDialogOpen(true)
               }}>
                 <Plus className="h-4 w-4 mr-1" />
-                Create Topic
+                Создать тему
               </Button>
             )}
           </div>
@@ -420,13 +420,13 @@ export function PackDetail() {
                 <div className="flex items-center justify-between">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">Educational Content</span>
+                      <span className="text-sm font-medium">Образовательный контент</span>
                       <span className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">
-                        {grammarTopic.video_url.includes('t.me') ? 'Telegram Video' : 'Video'}
+                        {grammarTopic.video_url.includes('t.me') ? 'Видео Telegram' : 'Видео'}
                       </span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1 truncate">
-                      {grammarTopic.markdown_text ? `${grammarTopic.markdown_text.slice(0, 60)}...` : 'No content yet'}
+                      {grammarTopic.markdown_text ? `${grammarTopic.markdown_text.slice(0, 60)}...` : 'Контент ещё не добавлен'}
                     </p>
                   </div>
                   <Button 
@@ -446,8 +446,8 @@ export function PackDetail() {
               <Card className="p-3 border-dashed">
                 <div className="text-center text-muted-foreground">
                   <Plus className="h-6 w-6 mx-auto mb-1 opacity-50" />
-                  <p className="text-sm">No grammar topic created yet</p>
-                  <p className="text-xs">Add educational content with video and explanations</p>
+                  <p className="text-sm">Тема грамматики ещё не создана</p>
+                  <p className="text-xs">Добавьте образовательный контент с видео и объяснениями</p>
                 </div>
               </Card>
             )}
@@ -456,9 +456,9 @@ export function PackDetail() {
 
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h3 className="font-medium text-lg">Grammar Questions</h3>
+            <h3 className="font-medium text-lg">Вопросы по грамматике</h3>
             <p className="text-sm text-muted-foreground">
-              {grammarQuestions.length} questions • Fill-in-the-blank and sentence building exercises
+              {grammarQuestions.length} вопросов • Упражнения на заполнение пропусков и составление предложений
             </p>
           </div>
           <Button onClick={() => {
@@ -476,7 +476,7 @@ export function PackDetail() {
             setIsQuestionDialogOpen(true)
           }}>
             <Plus className="h-4 w-4 mr-2" />
-            Add Question
+            Добавить вопрос
           </Button>
         </div>
 
@@ -501,14 +501,14 @@ export function PackDetail() {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Grammar Question</AlertDialogTitle>
+                            <AlertDialogTitle>Удалить вопрос по грамматике</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Are you sure you want to delete this grammar question?
+                              Вы уверены, что хотите удалить этот вопрос по грамматике?
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => deleteGrammarQuestion(question.id)}>Delete</AlertDialogAction>
+                            <AlertDialogCancel>Отмена</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => deleteGrammarQuestion(question.id)}>Удалить</AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
@@ -539,8 +539,8 @@ export function PackDetail() {
             <Card className="p-3 text-center border-dashed">
               <div className="text-muted-foreground">
                 <Plus className="h-4 w-4 mx-auto mb-1 opacity-50" />
-                <p className="text-xs">No questions yet</p>
-                <p className="text-xs opacity-75">Create exercises</p>
+                <p className="text-xs">Пока нет вопросов</p>
+                <p className="text-xs opacity-75">Создайте упражнения</p>
               </div>
             </Card>
           </div>
@@ -550,29 +550,29 @@ export function PackDetail() {
         <Dialog open={isQuestionDialogOpen} onOpenChange={setIsQuestionDialogOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Add Grammar Question</DialogTitle>
+              <DialogTitle>Добавить вопрос по грамматике</DialogTitle>
               <DialogDescription>
-                Create a new grammar exercise
+                Создать новое грамматическое упражнение
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="type" className="text-right">Type</Label>
+                <Label htmlFor="type" className="text-right">Тип</Label>
                 <select
                   id="type"
                   value={formData.type || 'fill'}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                   className="col-span-3 px-3 py-2 border border-gray-300 rounded-md"
                 >
-                  <option value="fill">Fill (Multiple Choice)</option>
-                  <option value="build">Build (Sentence)</option>
+                  <option value="fill">Заполнение (выбор варианта)</option>
+                  <option value="build">Составление (предложение)</option>
                 </select>
               </div>
               
               {formData.type === 'fill' ? (
                 <>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="text_before" className="text-right">Text Before ___</Label>
+                    <Label htmlFor="text_before" className="text-right">Текст до ___</Label>
                     <Input
                       id="text_before"
                       value={formData.text_before || ''}
@@ -592,7 +592,7 @@ export function PackDetail() {
                     />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="text_after" className="text-right">Text After ___</Label>
+                    <Label htmlFor="text_after" className="text-right">Текст после ___</Label>
                     <Input
                       id="text_after"
                       value={formData.text_after || ''}
@@ -613,7 +613,7 @@ export function PackDetail() {
                   </div>
                   
                   <div className="space-y-3">
-                    <Label className="text-sm font-medium">Options (select correct answer)</Label>
+                    <Label className="text-sm font-medium">Варианты (выберите правильный ответ)</Label>
                     <div className="space-y-2">
                       {[0, 1, 2, 3].map((index) => (
                         <div key={index} className="flex items-center gap-3">
@@ -634,7 +634,7 @@ export function PackDetail() {
                                 setFormData({ ...formData, [`option_${index}`]: value })
                               }
                             }}
-                            placeholder={`Option ${index + 1}`}
+                            placeholder={`Вариант ${index + 1}`}
                             className="flex-1"
                             autoComplete="off"
                             autoCorrect="off"
@@ -648,7 +648,7 @@ export function PackDetail() {
                 </>
               ) : (
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="sentence" className="text-right">Sentence</Label>
+                  <Label htmlFor="sentence" className="text-right">Предложение</Label>
                   <Input
                     id="sentence"
                     value={formData.sentence || ''}
@@ -670,7 +670,7 @@ export function PackDetail() {
               )}
             </div>
             <DialogFooter>
-              <Button onClick={createGrammarQuestion}>Create Question</Button>
+              <Button onClick={createGrammarQuestion}>Создать вопрос</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -679,29 +679,29 @@ export function PackDetail() {
         <Dialog open={isEditQuestionDialogOpen} onOpenChange={setIsEditQuestionDialogOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Edit Grammar Question</DialogTitle>
+              <DialogTitle>Редактировать вопрос по грамматике</DialogTitle>
               <DialogDescription>
-                Update this grammar exercise
+                Обновить это грамматическое упражнение
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit_type" className="text-right">Type</Label>
+                <Label htmlFor="edit_type" className="text-right">Тип</Label>
                 <select
                   id="edit_type"
                   value={formData.type || 'fill'}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                   className="col-span-3 px-3 py-2 border border-gray-300 rounded-md"
                 >
-                  <option value="fill">Fill (Multiple Choice)</option>
-                  <option value="build">Build (Sentence)</option>
+                  <option value="fill">Заполнение (выбор варианта)</option>
+                  <option value="build">Составление (предложение)</option>
                 </select>
               </div>
               
               {formData.type === 'fill' ? (
                 <>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="edit_text_before" className="text-right">Text Before ___</Label>
+                    <Label htmlFor="edit_text_before" className="text-right">Текст до ___</Label>
                     <Input
                       id="edit_text_before"
                       value={formData.text_before || ''}
@@ -721,7 +721,7 @@ export function PackDetail() {
                     />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="edit_text_after" className="text-right">Text After ___</Label>
+                    <Label htmlFor="edit_text_after" className="text-right">Текст после ___</Label>
                     <Input
                       id="edit_text_after"
                       value={formData.text_after || ''}
@@ -742,7 +742,7 @@ export function PackDetail() {
                   </div>
                   
                   <div className="space-y-3">
-                    <Label className="text-sm font-medium">Options (select correct answer)</Label>
+                    <Label className="text-sm font-medium">Варианты (выберите правильный ответ)</Label>
                     <div className="space-y-2">
                       {[0, 1, 2, 3].map((index) => (
                         <div key={index} className="flex items-center gap-3">
@@ -763,7 +763,7 @@ export function PackDetail() {
                                 setFormData({ ...formData, [`option_${index}`]: value })
                               }
                             }}
-                            placeholder={`Option ${index + 1}`}
+                            placeholder={`Вариант ${index + 1}`}
                             className="flex-1"
                             autoComplete="off"
                             autoCorrect="off"
@@ -777,7 +777,7 @@ export function PackDetail() {
                 </>
               ) : (
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="edit_sentence" className="text-right">Sentence</Label>
+                  <Label htmlFor="edit_sentence" className="text-right">Предложение</Label>
                   <Input
                     id="edit_sentence"
                     value={formData.sentence || ''}
@@ -799,7 +799,7 @@ export function PackDetail() {
               )}
             </div>
             <DialogFooter>
-              <Button onClick={updateGrammarQuestion}>Update Question</Button>
+              <Button onClick={updateGrammarQuestion}>Обновить вопрос</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -808,14 +808,14 @@ export function PackDetail() {
         <Dialog open={isCreateTopicDialogOpen} onOpenChange={setIsCreateTopicDialogOpen}>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>Create Grammar Topic</DialogTitle>
+              <DialogTitle>Создать тему по грамматике</DialogTitle>
               <DialogDescription>
-                Add Telegram video URL. Markdown content will be empty initially.
+                Добавьте URL видео Telegram. Контент Markdown будет пустым изначально.
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-3">
               <div className="space-y-2">
-                <Label htmlFor="topic_video_url">Telegram Video URL</Label>
+                <Label htmlFor="topic_video_url">URL видео Telegram</Label>
                 <Input
                   id="topic_video_url"
                   value={formData.video_url || ''}
@@ -824,19 +824,19 @@ export function PackDetail() {
                   className={!validateTelegramUrl(formData.video_url || '') && formData.video_url ? 'border-red-300' : ''}
                 />
                 {formData.video_url && !validateTelegramUrl(formData.video_url) && (
-                  <p className="text-xs text-red-600">Please enter a valid Telegram URL</p>
+                  <p className="text-xs text-red-600">Введите действительный URL Telegram</p>
                 )}
               </div>
             </div>
             <DialogFooter className="gap-2">
               <Button variant="outline" onClick={() => setIsCreateTopicDialogOpen(false)}>
-                Cancel
+                Отмена
               </Button>
               <Button 
                 onClick={createGrammarTopicWithUrl}
                 disabled={!formData.video_url || !validateTelegramUrl(formData.video_url) || creatingTopic}
               >
-                {creatingTopic ? 'Creating...' : 'Create & Edit'}
+                {creatingTopic ? 'Создание...' : 'Создать и редактировать'}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -850,21 +850,21 @@ export function PackDetail() {
       <div className='mb-4 flex items-center justify-between'>
         <div>
           <h1 className='text-2xl font-bold tracking-tight'>{pack.title}</h1>
-          <p className='text-muted-foreground'>Word Pack • {words.length} words</p>
+          <p className='text-muted-foreground'>Словарный пакет • {words.length} слов</p>
         </div>
         <Button variant="outline" onClick={() => navigate({ to: `/education/${moduleId}/${lessonId}` })}>
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Packs
+          Назад к пакетам
         </Button>
       </div>
 
       <div className="mb-4 flex items-center justify-between">
         <div className="text-sm text-muted-foreground">
-          {words.length} words in this pack
+          {words.length} слов в этом пакете
         </div>
         <Button onClick={openCreateDialog}>
           <Plus className="h-4 w-4 mr-2" />
-          Add Word
+          Добавить слово
         </Button>
       </div>
 
@@ -889,14 +889,14 @@ export function PackDetail() {
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Delete Word</AlertDialogTitle>
+                      <AlertDialogTitle>Удалить слово</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Are you sure you want to delete the word "{word.ru_text}"?
+                        Вы уверены, что хотите удалить слово "{word.ru_text}"?
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => deleteWord(word.id)}>Delete</AlertDialogAction>
+                      <AlertDialogCancel>Отмена</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => deleteWord(word.id)}>Удалить</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
@@ -909,7 +909,7 @@ export function PackDetail() {
                   <source src={`${import.meta.env.VITE_API_BASE_URL || 'https://lrussrubackend-production.up.railway.app'}${word.audio_url}`} type="audio/mpeg" />
                 </audio>
               ) : (
-                <div className="flex-1 text-xs text-muted-foreground">No audio</div>
+                <div className="flex-1 text-xs text-muted-foreground">Нет аудио</div>
               )}
               <Button size="sm" variant="outline" onClick={() => openAudioDialog(word)}>
                 <Upload className="h-3 w-3" />
@@ -923,14 +923,14 @@ export function PackDetail() {
       <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add Word</DialogTitle>
+            <DialogTitle>Добавить слово</DialogTitle>
             <DialogDescription>
-              Add a new word to this pack
+              Добавить новое слово в этот пакет
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="ru_text" className="text-right">Russian</Label>
+              <Label htmlFor="ru_text" className="text-right">Русский</Label>
               <Input
                 id="ru_text"
                 value={formData.ru_text || ''}
@@ -940,7 +940,7 @@ export function PackDetail() {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="uz_text" className="text-right">Uzbek</Label>
+              <Label htmlFor="uz_text" className="text-right">Узбекский</Label>
               <Input
                 id="uz_text"
                 value={formData.uz_text || ''}
@@ -952,7 +952,7 @@ export function PackDetail() {
           </div>
           <DialogFooter>
             <Button onClick={createWord}>
-              Create
+              Создать
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -962,14 +962,14 @@ export function PackDetail() {
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Word</DialogTitle>
+            <DialogTitle>Редактировать слово</DialogTitle>
             <DialogDescription>
-              Edit word details
+              Редактировать детали слова
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="edit-ru_text" className="text-right">Russian</Label>
+              <Label htmlFor="edit-ru_text" className="text-right">Русский</Label>
               <Input
                 id="edit-ru_text"
                 value={formData.ru_text || ''}
@@ -978,7 +978,7 @@ export function PackDetail() {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="edit-uz_text" className="text-right">Uzbek</Label>
+              <Label htmlFor="edit-uz_text" className="text-right">Узбекский</Label>
               <Input
                 id="edit-uz_text"
                 value={formData.uz_text || ''}
@@ -989,7 +989,7 @@ export function PackDetail() {
           </div>
           <DialogFooter>
             <Button onClick={updateWord}>
-              Update
+              Обновить
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -999,14 +999,14 @@ export function PackDetail() {
       <Dialog open={isAudioDialogOpen} onOpenChange={setIsAudioDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Upload Audio</DialogTitle>
+            <DialogTitle>Загрузить аудио</DialogTitle>
             <DialogDescription>
-              Upload audio for "{audioUploadWord?.ru_text}"
+              Загрузить аудио для "{audioUploadWord?.ru_text}"
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="audio-upload" className="text-right">Audio</Label>
+              <Label htmlFor="audio-upload" className="text-right">Аудио</Label>
               <div className="col-span-3">
                 <Input
                   id="audio-upload"
@@ -1015,14 +1015,14 @@ export function PackDetail() {
                   onChange={handleAudioFileChange}
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Max 1MB. MP3, WAV, OGG, M4A supported.
+                  Макс 1МБ. Поддерживаемые форматы: MP3, WAV, OGG, M4A.
                 </p>
               </div>
             </div>
           </div>
           <DialogFooter>
             <Button onClick={uploadWordAudio} disabled={!audioFile || uploading}>
-              {uploading ? 'Uploading...' : 'Upload Audio'}
+              {uploading ? 'Загрузка...' : 'Загрузить аудио'}
             </Button>
           </DialogFooter>
         </DialogContent>

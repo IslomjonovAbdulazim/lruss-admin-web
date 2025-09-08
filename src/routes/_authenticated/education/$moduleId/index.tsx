@@ -34,7 +34,7 @@ function ModuleDetail() {
       const response = await educationApi.getModuleWithLessons(parseInt(moduleId))
       setLessons(response.data.lessons || [])
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to fetch lessons')
+      toast.error(error.response?.data?.detail || 'Не удалось загрузить уроки')
     } finally {
       setLoading(false)
     }
@@ -43,35 +43,35 @@ function ModuleDetail() {
   const createLesson = async () => {
     try {
       await educationApi.createLesson({ ...formData, module_id: parseInt(moduleId) })
-      toast.success('Lesson created successfully')
+      toast.success('Урок успешно создан')
       setIsCreateDialogOpen(false)
       setFormData({})
       fetchLessons()
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to create lesson')
+      toast.error(error.response?.data?.detail || 'Не удалось создать урок')
     }
   }
 
   const updateLesson = async () => {
     try {
       await educationApi.updateLesson(editingLesson!.id, formData)
-      toast.success('Lesson updated successfully')
+      toast.success('Урок успешно обновлён')
       setIsEditDialogOpen(false)
       setEditingLesson(null)
       setFormData({})
       fetchLessons()
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to update lesson')
+      toast.error(error.response?.data?.detail || 'Не удалось обновить урок')
     }
   }
 
   const deleteLesson = async (lessonId: number) => {
     try {
       await educationApi.deleteLesson(lessonId)
-      toast.success('Lesson deleted successfully')
+      toast.success('Урок успешно удалён')
       fetchLessons()
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to delete lesson')
+      toast.error(error.response?.data?.detail || 'Не удалось удалить урок')
     }
   }
 
@@ -91,18 +91,18 @@ function ModuleDetail() {
   }
 
   if (loading) {
-    return <div className="flex justify-center p-8">Loading lessons...</div>
+    return <div className="flex justify-center p-8">Загрузка уроков...</div>
   }
 
   return (
     <>
       <div className="mb-4 flex items-center justify-between">
         <div className="text-sm text-muted-foreground">
-          Found {lessons.length} lessons in this module
+          Найдено {lessons.length} уроков в этом модуле
         </div>
         <Button onClick={openCreateDialog}>
           <Plus className="h-4 w-4 mr-2" />
-          Add Lesson
+          Добавить урок
         </Button>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -120,14 +120,14 @@ function ModuleDetail() {
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Delete Lesson</AlertDialogTitle>
+                    <AlertDialogTitle>Удалить урок</AlertDialogTitle>
                     <AlertDialogDescription>
-                      Are you sure you want to delete "{lesson.title}"? This will also delete all packs within this lesson.
+                      Вы уверены, что хотите удалить "{lesson.title}"? Это также удалит все пакеты в этом уроке.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => deleteLesson(lesson.id)}>Delete</AlertDialogAction>
+                    <AlertDialogCancel>Отмена</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => deleteLesson(lesson.id)}>Удалить</AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
@@ -168,7 +168,7 @@ function ModuleDetail() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm mb-2">{lesson.description}</p>
-                <p className="text-sm text-muted-foreground">Order: {lesson.order}</p>
+                <p className="text-sm text-muted-foreground">Порядок: {lesson.order}</p>
               </CardContent>
             </div>
           </Card>
@@ -179,14 +179,14 @@ function ModuleDetail() {
       <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Create Lesson</DialogTitle>
+            <DialogTitle>Создать урок</DialogTitle>
             <DialogDescription>
-              Create a new lesson in this module
+              Создать новый урок в этом модуле
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="title" className="text-right">Title</Label>
+              <Label htmlFor="title" className="text-right">Заголовок</Label>
               <Input
                 id="title"
                 value={formData.title || ''}
@@ -195,7 +195,7 @@ function ModuleDetail() {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="description" className="text-right">Description</Label>
+              <Label htmlFor="description" className="text-right">Описание</Label>
               <Textarea
                 id="description"
                 value={formData.description || ''}
@@ -204,7 +204,7 @@ function ModuleDetail() {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="order" className="text-right">Order</Label>
+              <Label htmlFor="order" className="text-right">Порядок</Label>
               <Input
                 id="order"
                 type="number"
@@ -215,7 +215,7 @@ function ModuleDetail() {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={createLesson}>Create</Button>
+            <Button onClick={createLesson}>Создать</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -224,14 +224,14 @@ function ModuleDetail() {
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Lesson</DialogTitle>
+            <DialogTitle>Редактировать урок</DialogTitle>
             <DialogDescription>
-              Edit lesson details
+              Редактировать детали урока
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="edit-title" className="text-right">Title</Label>
+              <Label htmlFor="edit-title" className="text-right">Заголовок</Label>
               <Input
                 id="edit-title"
                 value={formData.title || ''}
@@ -240,7 +240,7 @@ function ModuleDetail() {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="edit-description" className="text-right">Description</Label>
+              <Label htmlFor="edit-description" className="text-right">Описание</Label>
               <Textarea
                 id="edit-description"
                 value={formData.description || ''}
@@ -249,7 +249,7 @@ function ModuleDetail() {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="edit-order" className="text-right">Order</Label>
+              <Label htmlFor="edit-order" className="text-right">Порядок</Label>
               <Input
                 id="edit-order"
                 type="number"
@@ -260,7 +260,7 @@ function ModuleDetail() {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={updateLesson}>Update</Button>
+            <Button onClick={updateLesson}>Обновить</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

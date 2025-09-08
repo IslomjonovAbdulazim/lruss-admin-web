@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { useNavigate, Link } from '@tanstack/react-router'
 import {
   Card,
   CardContent,
@@ -13,7 +12,6 @@ import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { TopNav } from '@/components/layout/top-nav'
-import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { Overview } from './components/overview'
@@ -22,7 +20,6 @@ import { adminApi, type StatsResponse } from '@/lib/api'
 import { toast } from 'sonner'
 
 export function Dashboard() {
-  const navigate = useNavigate()
   const [stats, setStats] = useState<StatsResponse | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -32,7 +29,7 @@ export function Dashboard() {
         const response = await adminApi.getStats()
         setStats(response.data)
       } catch (error: any) {
-        toast.error(error.response?.data?.detail || 'Failed to fetch stats')
+        toast.error(error.response?.data?.detail || 'Не удалось загрузить статистику')
       } finally {
         setLoading(false)
       }
@@ -49,28 +46,15 @@ export function Dashboard() {
           <Search />
           <ThemeSwitch />
           <ConfigDrawer />
-          <ProfileDropdown />
         </div>
       </Header>
 
       {/* ===== Main ===== */}
       <Main>
         <div className='mb-2 flex items-center justify-between space-y-2'>
-          <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>Панель управления</h1>
           <div className='flex items-center space-x-2'>
-            <Button 
-              variant="outline" 
-              onClick={() => {
-                console.log('🧪 [DASHBOARD] Testing navigation to topic route...')
-                navigate({ to: '/education/$moduleId/$lessonId/$packId/topic', params: { moduleId: '1', lessonId: '2', packId: '1' } })
-              }}
-            >
-              🧪 Test Topic Route
-            </Button>
-            <Link to='/education/$moduleId/$lessonId/$packId/topic' params={{ moduleId: '1', lessonId: '2', packId: '1' }}>
-              <Button variant="outline">🔗 Link to Topic</Button>
-            </Link>
-            <Button onClick={() => window.location.reload()}>Refresh</Button>
+            <Button onClick={() => window.location.reload()}>Обновить</Button>
           </div>
         </div>
         <Tabs
@@ -80,15 +64,15 @@ export function Dashboard() {
         >
           <div className='w-full overflow-x-auto pb-2'>
             <TabsList>
-              <TabsTrigger value='overview'>Overview</TabsTrigger>
+              <TabsTrigger value='overview'>Обзор</TabsTrigger>
               <TabsTrigger value='analytics' disabled>
-                Analytics
+                Аналитика
               </TabsTrigger>
               <TabsTrigger value='reports' disabled>
-                Reports
+                Отчёты
               </TabsTrigger>
               <TabsTrigger value='notifications' disabled>
-                Notifications
+                Уведомления
               </TabsTrigger>
             </TabsList>
           </div>
@@ -97,7 +81,7 @@ export function Dashboard() {
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                   <CardTitle className='text-sm font-medium'>
-                    Total Users
+                    Всего пользователей
                   </CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -119,14 +103,14 @@ export function Dashboard() {
                     {loading ? '...' : stats?.total_users || 0}
                   </div>
                   <p className='text-muted-foreground text-xs'>
-                    Total registered users
+                    Всего зарегистрированных пользователей
                   </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                   <CardTitle className='text-sm font-medium'>
-                    Education Content
+                    Образовательный контент
                   </CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -147,13 +131,13 @@ export function Dashboard() {
                     {loading ? '...' : (stats?.total_modules || 0) + (stats?.total_lessons || 0) + (stats?.total_packs || 0)}
                   </div>
                   <p className='text-muted-foreground text-xs'>
-                    {stats?.total_modules || 0} modules • {stats?.total_lessons || 0} lessons • {stats?.total_packs || 0} packs
+                    {stats?.total_modules || 0} модулей • {stats?.total_lessons || 0} уроков • {stats?.total_packs || 0} пакетов
                   </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>Words & Grammar</CardTitle>
+                  <CardTitle className='text-sm font-medium'>Слова и грамматика</CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     viewBox='0 0 24 24'
@@ -172,14 +156,14 @@ export function Dashboard() {
                     {loading ? '...' : (stats?.total_words || 0) + (stats?.total_grammar_questions || 0)}
                   </div>
                   <p className='text-muted-foreground text-xs'>
-                    {stats?.total_words || 0} words • {stats?.total_grammar_questions || 0} grammar questions
+                    {stats?.total_words || 0} слов • {stats?.total_grammar_questions || 0} вопросов по грамматике
                   </p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                   <CardTitle className='text-sm font-medium'>
-                    Active Users (7d)
+                    Активные пользователи (7д)
                   </CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -199,7 +183,7 @@ export function Dashboard() {
                     {loading ? '...' : stats?.active_users_last_7_days || 0}
                   </div>
                   <p className='text-muted-foreground text-xs'>
-                    Active in last 7 days
+                    Активны за последние 7 дней
                   </p>
                 </CardContent>
               </Card>
@@ -207,7 +191,7 @@ export function Dashboard() {
             <div className='grid grid-cols-1 gap-4 lg:grid-cols-7'>
               <Card className='col-span-1 lg:col-span-4'>
                 <CardHeader>
-                  <CardTitle>Overview</CardTitle>
+                  <CardTitle>Обзор</CardTitle>
                 </CardHeader>
                 <CardContent className='ps-2'>
                   <Overview />
@@ -215,9 +199,9 @@ export function Dashboard() {
               </Card>
               <Card className='col-span-1 lg:col-span-3'>
                 <CardHeader>
-                  <CardTitle>Recent Activity</CardTitle>
+                  <CardTitle>Последняя активность</CardTitle>
                   <CardDescription>
-                    Latest user registrations and activity.
+                    Последние регистрации пользователей и активность.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -234,7 +218,7 @@ export function Dashboard() {
 
 const topNav = [
   {
-    title: 'Overview',
+    title: 'Обзор',
     href: '/',
     isActive: true,
     disabled: false,

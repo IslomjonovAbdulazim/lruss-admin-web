@@ -23,7 +23,6 @@ import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authen
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedEducationIndexRouteImport } from './routes/_authenticated/education/index'
-import { Route as AuthenticatedSettingsDisplayRouteImport } from './routes/_authenticated/settings/display'
 import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 import { Route as AuthenticatedEducationModuleIdRouteImport } from './routes/_authenticated/education/$moduleId'
@@ -107,12 +106,6 @@ const AuthenticatedEducationIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedEducationRoute,
   } as any)
-const AuthenticatedSettingsDisplayRoute =
-  AuthenticatedSettingsDisplayRouteImport.update({
-    id: '/display',
-    path: '/display',
-    getParentRoute: () => AuthenticatedSettingsRouteRoute,
-  } as any)
 const AuthenticatedSettingsAppearanceRoute =
   AuthenticatedSettingsAppearanceRouteImport.update({
     id: '/appearance',
@@ -182,7 +175,6 @@ export interface FileRoutesByFullPath {
   '/education/$moduleId': typeof AuthenticatedEducationModuleIdRouteWithChildren
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
-  '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/education/': typeof AuthenticatedEducationIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -204,7 +196,6 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
-  '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/education': typeof AuthenticatedEducationIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -229,7 +220,6 @@ export interface FileRoutesById {
   '/_authenticated/education/$moduleId': typeof AuthenticatedEducationModuleIdRouteWithChildren
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
-  '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/_authenticated/education/': typeof AuthenticatedEducationIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
@@ -256,7 +246,6 @@ export interface FileRouteTypes {
     | '/education/$moduleId'
     | '/errors/$error'
     | '/settings/appearance'
-    | '/settings/display'
     | '/education/'
     | '/settings/'
     | '/users'
@@ -278,7 +267,6 @@ export interface FileRouteTypes {
     | '/'
     | '/errors/$error'
     | '/settings/appearance'
-    | '/settings/display'
     | '/education'
     | '/settings'
     | '/users'
@@ -302,7 +290,6 @@ export interface FileRouteTypes {
     | '/_authenticated/education/$moduleId'
     | '/_authenticated/errors/$error'
     | '/_authenticated/settings/appearance'
-    | '/_authenticated/settings/display'
     | '/_authenticated/education/'
     | '/_authenticated/settings/'
     | '/_authenticated/users/'
@@ -424,13 +411,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEducationIndexRouteImport
       parentRoute: typeof AuthenticatedEducationRoute
     }
-    '/_authenticated/settings/display': {
-      id: '/_authenticated/settings/display'
-      path: '/display'
-      fullPath: '/settings/display'
-      preLoaderRoute: typeof AuthenticatedSettingsDisplayRouteImport
-      parentRoute: typeof AuthenticatedSettingsRouteRoute
-    }
     '/_authenticated/settings/appearance': {
       id: '/_authenticated/settings/appearance'
       path: '/appearance'
@@ -499,14 +479,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedSettingsRouteRouteChildren {
   AuthenticatedSettingsAppearanceRoute: typeof AuthenticatedSettingsAppearanceRoute
-  AuthenticatedSettingsDisplayRoute: typeof AuthenticatedSettingsDisplayRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
 }
 
 const AuthenticatedSettingsRouteRouteChildren: AuthenticatedSettingsRouteRouteChildren =
   {
     AuthenticatedSettingsAppearanceRoute: AuthenticatedSettingsAppearanceRoute,
-    AuthenticatedSettingsDisplayRoute: AuthenticatedSettingsDisplayRoute,
     AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   }
 

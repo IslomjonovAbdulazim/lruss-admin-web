@@ -12,7 +12,6 @@ import { cn } from '@/lib/utils'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
-import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { subscriptionApi, adminApi, type Subscription, type SubscriptionStats, type User } from '@/lib/api'
@@ -63,7 +62,7 @@ export function Subscriptions() {
       setStats(statsRes.data)
       setUsers(usersRes.data.users)
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to fetch data')
+      toast.error(error.response?.data?.detail || 'Не удалось загрузить данные')
     } finally {
       setLoading(false)
     }
@@ -71,7 +70,7 @@ export function Subscriptions() {
 
   const handleCreateSubscription = async () => {
     if (!selectedUser || !newSubscription.start_date || !newSubscription.end_date) {
-      toast.error('Please select a user and fill all required fields')
+      toast.error('Пожалуйста, выберите пользователя и заполните все обязательные поля')
       return
     }
     
@@ -95,12 +94,12 @@ export function Subscriptions() {
       })
       setSelectedUser(null)
       setIsDialogOpen(false)
-      toast.success('Subscription created successfully')
+      toast.success('Подписка успешно создана')
       fetchData() // Refresh stats
     } catch (error: any) {
       console.error('Subscription creation error:', error)
-      const errorMessage = error.response?.data?.detail || error.message || 'Failed to create subscription'
-      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to create subscription')
+      const errorMessage = error.response?.data?.detail || error.message || 'Не удалось создать подписку'
+      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Не удалось создать подписку')
     } finally {
       setLoading(false)
     }
@@ -115,12 +114,12 @@ export function Subscriptions() {
       setSubscriptions(prev => prev.filter(s => s.id !== subscriptionToDelete.id))
       setDeleteDialogOpen(false)
       setSubscriptionToDelete(null)
-      toast.success('Subscription deleted successfully')
+      toast.success('Подписка успешно удалена')
       fetchData() // Refresh stats
     } catch (error: any) {
       console.error('Subscription delete error:', error)
-      const errorMessage = error.response?.data?.detail || error.message || 'Failed to delete subscription'
-      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to delete subscription')
+      const errorMessage = error.response?.data?.detail || error.message || 'Не удалось удалить подписку'
+      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Не удалось удалить подписку')
     } finally {
       setLoading(false)
     }
@@ -128,7 +127,7 @@ export function Subscriptions() {
 
   const handleEditSubscription = async () => {
     if (!selectedSubscription || !editSubscription.start_date || !editSubscription.end_date || !editSubscription.amount) {
-      toast.error('Please fill required fields')
+      toast.error('Пожалуйста, заполните обязательные поля')
       return
     }
     
@@ -142,12 +141,12 @@ export function Subscriptions() {
       })
       setSubscriptions(prev => prev.map(s => s.id === selectedSubscription.id ? response.data : s))
       setEditDialogOpen(false)
-      toast.success('Subscription updated successfully')
+      toast.success('Подписка успешно обновлена')
       fetchData()
     } catch (error: any) {
       console.error('Subscription update error:', error)
-      const errorMessage = error.response?.data?.detail || error.message || 'Failed to update subscription'
-      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to update subscription')
+      const errorMessage = error.response?.data?.detail || error.message || 'Не удалось обновить подписку'
+      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Не удалось обновить подписку')
     } finally {
       setLoading(false)
     }
@@ -176,27 +175,26 @@ export function Subscriptions() {
         <div className='ms-auto flex items-center space-x-4'>
           <ThemeSwitch />
           <ConfigDrawer />
-          <ProfileDropdown />
         </div>
       </Header>
 
       <Main>
         <div className='mb-2 flex items-center justify-between space-y-2'>
-          <h1 className='text-2xl font-bold tracking-tight'>Subscription Management</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>Управление подписками</h1>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button>
                 <Plus className="h-4 w-4 mr-2" />
-                Add Subscription
+Добавить подписку
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-md">
               <DialogHeader>
-                <DialogTitle>Create New Subscription</DialogTitle>
+                <DialogTitle>Создать новую подписку</DialogTitle>
               </DialogHeader>
               <div className="space-y-3">
                 <div>
-                  <Label htmlFor="user_search">Select User</Label>
+                  <Label htmlFor="user_search">Выберите пользователя</Label>
                     <Popover open={userSearchOpen} onOpenChange={setUserSearchOpen}>
                       <PopoverTrigger asChild>
                         <Button
@@ -207,15 +205,15 @@ export function Subscriptions() {
                         >
                           {selectedUser
                             ? `${selectedUser.first_name} ${selectedUser.last_name}`
-                            : "Select user..."}
+                            : "Выберите пользователя..."}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-full p-0">
                         <Command>
-                          <CommandInput placeholder="Search by name or phone..." />
+                          <CommandInput placeholder="Поиск по имени или телефону..." />
                           <CommandList>
-                            <CommandEmpty>No users found.</CommandEmpty>
+                            <CommandEmpty>Пользователи не найдены.</CommandEmpty>
                             <CommandGroup>
                               {users.map((user) => (
                                 <CommandItem
@@ -245,20 +243,20 @@ export function Subscriptions() {
                     </Popover>
                 </div>
                 <div>
-                  <Label htmlFor="amount">Sum</Label>
+                  <Label htmlFor="amount">Сумма</Label>
                   <Input
                     id="amount"
                     type="number"
                     step="1"
                     value={newSubscription.amount}
                     onChange={(e) => setNewSubscription(prev => ({ ...prev, amount: parseFloat(e.target.value) }))}
-                    placeholder="Enter sum"
+                    placeholder="Введите сумму"
                     className="h-8"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <Label htmlFor="start_date">Start Date</Label>
+                    <Label htmlFor="start_date">Дата начала</Label>
                     <Input
                       id="start_date"
                       type="date"
@@ -268,7 +266,7 @@ export function Subscriptions() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="end_date">End Date</Label>
+                    <Label htmlFor="end_date">Дата окончания</Label>
                     <Input
                       id="end_date"
                       type="date"
@@ -280,17 +278,17 @@ export function Subscriptions() {
                 </div>
                 <input type="hidden" value="UZS" />
                 <div>
-                  <Label htmlFor="notes">Notes</Label>
+                  <Label htmlFor="notes">Примечания</Label>
                   <Textarea
                     id="notes"
                     value={newSubscription.notes}
                     onChange={(e) => setNewSubscription(prev => ({ ...prev, notes: e.target.value }))}
-                    placeholder="Optional notes"
+                    placeholder="Необязательные примечания"
                     className="min-h-[50px] resize-none"
                   />
                 </div>
                 <Button onClick={handleCreateSubscription} disabled={loading} className="w-full h-8">
-                  {loading ? 'Creating...' : 'Create Subscription'}
+                  {loading ? 'Создание...' : 'Создать подписку'}
                 </Button>
               </div>
             </DialogContent>
@@ -300,7 +298,7 @@ export function Subscriptions() {
         <Dialog open={detailsDialogOpen} onOpenChange={setDetailsDialogOpen}>
           <DialogContent className="max-w-lg">
             <DialogHeader>
-              <DialogTitle>Subscription Details</DialogTitle>
+              <DialogTitle>Детали подписки</DialogTitle>
             </DialogHeader>
             {selectedSubscription && (() => {
               const startDate = new Date(selectedSubscription.start_date)
@@ -321,34 +319,34 @@ export function Subscriptions() {
                     </div>
                     <div className="p-3 bg-muted rounded">
                       <div className="text-lg font-bold">{durationDays}</div>
-                      <div className="text-xs text-muted-foreground">Days</div>
+                      <div className="text-xs text-muted-foreground">Дней</div>
                     </div>
                     <div className="p-3 bg-muted rounded">
                       <div className={`text-lg font-bold ${selectedSubscription.is_active ? 'text-green-600' : 'text-red-600'}`}>
-                        {selectedSubscription.is_active ? 'Active' : 'Inactive'}
+                        {selectedSubscription.is_active ? 'Активная' : 'Неактивная'}
                       </div>
-                      <div className="text-xs text-muted-foreground">Status</div>
+                      <div className="text-xs text-muted-foreground">Статус</div>
                     </div>
                   </div>
                   
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Start Date:</span>
+                      <span className="text-muted-foreground">Дата начала:</span>
                       <span>{startDate.toLocaleDateString()}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">End Date:</span>
+                      <span className="text-muted-foreground">Дата окончания:</span>
                       <span>{endDate.toLocaleDateString()}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Created by Admin:</span>
+                      <span className="text-muted-foreground">Создано админом:</span>
                       <span>{selectedSubscription.created_by_admin_id}</span>
                     </div>
                   </div>
                   
                   {selectedSubscription.notes && (
                     <div>
-                      <p className="text-sm font-medium mb-2">Notes:</p>
+                      <p className="text-sm font-medium mb-2">Примечания:</p>
                       <div className="p-3 bg-muted rounded text-sm">
                         {selectedSubscription.notes}
                       </div>
@@ -357,11 +355,11 @@ export function Subscriptions() {
                   
                   <div className="pt-2 border-t text-xs text-muted-foreground space-y-1">
                     <div className="flex justify-between">
-                      <span>Created:</span>
+                      <span>Создано:</span>
                       <span>{new Date(selectedSubscription.created_at).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Updated:</span>
+                      <span>Обновлено:</span>
                       <span>{new Date(selectedSubscription.updated_at).toLocaleString()}</span>
                     </div>
                   </div>
@@ -374,28 +372,28 @@ export function Subscriptions() {
         <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>Edit Subscription</DialogTitle>
+              <DialogTitle>Редактировать подписку</DialogTitle>
             </DialogHeader>
             {selectedSubscription && (
               <div className="space-y-3">
                 <div className="text-sm text-muted-foreground">
-                  Editing subscription for: {getUserById(selectedSubscription.user_id)?.first_name} {getUserById(selectedSubscription.user_id)?.last_name}
+                  Редактирование подписки для: {getUserById(selectedSubscription.user_id)?.first_name} {getUserById(selectedSubscription.user_id)?.last_name}
                 </div>
                 <div>
-                  <Label htmlFor="edit_amount">Sum</Label>
+                  <Label htmlFor="edit_amount">Сумма</Label>
                   <Input
                     id="edit_amount"
                     type="number"
                     step="1"
                     value={editSubscription.amount}
                     onChange={(e) => setEditSubscription(prev => ({ ...prev, amount: parseFloat(e.target.value) }))}
-                    placeholder="Enter sum"
+                    placeholder="Введите сумму"
                     className="h-8"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <Label htmlFor="edit_start_date">Start Date</Label>
+                    <Label htmlFor="edit_start_date">Дата начала</Label>
                     <Input
                       id="edit_start_date"
                       type="date"
@@ -405,7 +403,7 @@ export function Subscriptions() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="edit_end_date">End Date</Label>
+                    <Label htmlFor="edit_end_date">Дата окончания</Label>
                     <Input
                       id="edit_end_date"
                       type="date"
@@ -416,17 +414,17 @@ export function Subscriptions() {
                   </div>
                 </div>
                 <div>
-                  <Label htmlFor="edit_notes">Notes</Label>
+                  <Label htmlFor="edit_notes">Примечания</Label>
                   <Textarea
                     id="edit_notes"
                     value={editSubscription.notes}
                     onChange={(e) => setEditSubscription(prev => ({ ...prev, notes: e.target.value }))}
-                    placeholder="Optional notes"
+                    placeholder="Необязательные примечания"
                     className="min-h-[50px] resize-none"
                   />
                 </div>
                 <Button onClick={handleEditSubscription} disabled={loading} className="w-full h-8">
-                  {loading ? 'Updating...' : 'Update Subscription'}
+                  {loading ? 'Обновление...' : 'Обновить подписку'}
                 </Button>
               </div>
             )}
@@ -436,18 +434,18 @@ export function Subscriptions() {
         <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>Delete Subscription</DialogTitle>
+              <DialogTitle>Удалить подписку</DialogTitle>
             </DialogHeader>
             {subscriptionToDelete && (
               <div className="space-y-4">
                 <div className="text-center">
-                  <div className="text-sm text-muted-foreground mb-2">You are about to delete the subscription for:</div>
+                  <div className="text-sm text-muted-foreground mb-2">Вы собираетесь удалить подписку для:</div>
                   <div className="font-semibold">{getUserById(subscriptionToDelete.user_id)?.first_name} {getUserById(subscriptionToDelete.user_id)?.last_name}</div>
                   <div className="text-sm text-muted-foreground">{subscriptionToDelete.amount.toLocaleString()} UZS</div>
                 </div>
                 
                 <div className="p-3 bg-red-50 border border-red-200 rounded text-sm text-red-700 text-center">
-                  <strong>Warning:</strong> This action cannot be undone!
+                  <strong>Предупреждение:</strong> Это действие нельзя отменить!
                 </div>
                 
                 <div className="flex gap-3">
@@ -456,7 +454,7 @@ export function Subscriptions() {
                     onClick={() => setDeleteDialogOpen(false)}
                     className="flex-1 h-8"
                   >
-                    Cancel
+Отмена
                   </Button>
                   <Button 
                     variant="destructive" 
@@ -464,7 +462,7 @@ export function Subscriptions() {
                     disabled={loading}
                     className="flex-1 h-8"
                   >
-                    {loading ? 'Deleting...' : 'Delete'}
+                    {loading ? 'Удаление...' : 'Удалить'}
                   </Button>
                 </div>
               </div>
@@ -474,21 +472,21 @@ export function Subscriptions() {
         
         <Tabs defaultValue='subscriptions' className='space-y-4'>
           <TabsList>
-            <TabsTrigger value='subscriptions'>Subscriptions</TabsTrigger>
-            <TabsTrigger value='stats'>Statistics</TabsTrigger>
+            <TabsTrigger value='subscriptions'>Подписки</TabsTrigger>
+            <TabsTrigger value='stats'>Статистика</TabsTrigger>
           </TabsList>
           
           <TabsContent value='subscriptions' className="space-y-4">
             <div className="mb-4">
               <Input
-                placeholder="Search by user name, amount, or notes..."
+                placeholder="Поиск по имени пользователя, сумме или примечаниям..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="max-w-sm"
               />
             </div>
             {loading ? (
-              <div className="flex justify-center p-8">Loading...</div>
+              <div className="flex justify-center p-8">Загрузка...</div>
             ) : (
               <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
                 {filteredSubscriptions.map((subscription) => (
@@ -497,7 +495,7 @@ export function Subscriptions() {
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2 text-sm">
                           <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${subscription.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                            {subscription.is_active ? 'Active' : 'Inactive'}
+                            {subscription.is_active ? 'Активная' : 'Неактивная'}
                           </span>
                           <span className="font-medium">
                             {getUserById(subscription.user_id)?.first_name} {getUserById(subscription.user_id)?.last_name} - {subscription.amount.toLocaleString()} UZS
@@ -561,7 +559,7 @@ export function Subscriptions() {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+                    <CardTitle className="text-sm font-medium">Общий доход</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{stats.total_revenue.toLocaleString()} UZS</div>
@@ -569,7 +567,7 @@ export function Subscriptions() {
                 </Card>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
+                    <CardTitle className="text-sm font-medium">Месячный доход</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{stats.monthly_revenue.toLocaleString()} UZS</div>
@@ -577,7 +575,7 @@ export function Subscriptions() {
                 </Card>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-sm font-medium">Active Subscriptions</CardTitle>
+                    <CardTitle className="text-sm font-medium">Активные подписки</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{stats.active_subscriptions}</div>
@@ -585,7 +583,7 @@ export function Subscriptions() {
                 </Card>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-sm font-medium">Average Value</CardTitle>
+                    <CardTitle className="text-sm font-medium">Средняя стоимость</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{stats.average_subscription_value.toLocaleString()} UZS</div>
@@ -593,7 +591,7 @@ export function Subscriptions() {
                 </Card>
               </div>
             ) : (
-              <div className="flex justify-center p-8">Loading stats...</div>
+              <div className="flex justify-center p-8">Загрузка статистики...</div>
             )}
           </TabsContent>
         </Tabs>

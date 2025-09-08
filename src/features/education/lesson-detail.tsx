@@ -47,7 +47,7 @@ export function LessonDetail() {
       console.log('🔥 [LESSON DETAIL] Data loaded successfully')
     } catch (error: any) {
       console.error('🔴 [LESSON DETAIL] Error:', error)
-      toast.error(error.response?.data?.detail || 'Failed to fetch lesson')
+      toast.error(error.response?.data?.detail || 'Не удалось загрузить урок')
       navigate({ to: `/education/${moduleId}` })
     } finally {
       setLoading(false)
@@ -57,35 +57,35 @@ export function LessonDetail() {
   const createPack = async () => {
     try {
       await educationApi.createPack({ ...formData, lesson_id: parseInt(lessonId as string) })
-      toast.success('Pack created successfully')
+      toast.success('Пакет успешно создан')
       setIsCreateDialogOpen(false)
       setFormData({})
       fetchLesson()
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to create pack')
+      toast.error(error.response?.data?.detail || 'Не удалось создать пакет')
     }
   }
 
   const updatePack = async () => {
     try {
       await educationApi.updatePack(editingPack!.id, formData)
-      toast.success('Pack updated successfully')
+      toast.success('Пакет успешно обновлён')
       setIsEditDialogOpen(false)
       setEditingPack(null)
       setFormData({})
       fetchLesson()
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to update pack')
+      toast.error(error.response?.data?.detail || 'Не удалось обновить пакет')
     }
   }
 
   const deletePack = async (packId: number) => {
     try {
       await educationApi.deletePack(packId)
-      toast.success('Pack deleted successfully')
+      toast.success('Пакет успешно удалён')
       fetchLesson()
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to delete pack')
+      toast.error(error.response?.data?.detail || 'Не удалось удалить пакет')
     }
   }
 
@@ -109,26 +109,26 @@ export function LessonDetail() {
     <>
         <div className='mb-4 flex items-center justify-between'>
           <div>
-            <h1 className='text-2xl font-bold tracking-tight'>{lesson?.title || 'Lesson'}</h1>
+            <h1 className='text-2xl font-bold tracking-tight'>{lesson?.title || 'Урок'}</h1>
             <p className='text-muted-foreground'>{module?.title} &gt; {lesson?.title}</p>
           </div>
           <Button variant="outline" onClick={() => navigate({ to: `/education/${moduleId}` })}>
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Lessons
+            Назад к урокам
           </Button>
         </div>
 
         {loading ? (
-          <div className="flex justify-center p-8">Loading...</div>
+          <div className="flex justify-center p-8">Загрузка...</div>
         ) : (
           <>
             <div className="mb-4 flex items-center justify-between">
               <div className="text-sm text-muted-foreground">
-                Found {packs.length} packs in this lesson
+                Найдено {packs.length} пакетов в этом уроке
               </div>
               <Button onClick={openCreateDialog}>
                 <Plus className="h-4 w-4 mr-2" />
-                Add Pack
+                Добавить пакет
               </Button>
             </div>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -146,14 +146,14 @@ export function LessonDetail() {
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Delete Pack</AlertDialogTitle>
+                          <AlertDialogTitle>Удалить пакет</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Are you sure you want to delete "{pack.title}"? This will also delete all words and grammar questions within this pack.
+                            Вы уверены, что хотите удалить "{pack.title}"? Это также удалит все слова и грамматические вопросы в этом пакете.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => deletePack(pack.id)}>Delete</AlertDialogAction>
+                          <AlertDialogCancel>Отмена</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => deletePack(pack.id)}>Удалить</AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
@@ -195,9 +195,9 @@ export function LessonDetail() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-muted-foreground">Type: {pack.type}</p>
+                      <p className="text-sm text-muted-foreground">Тип: {pack.type}</p>
                       {pack.type === 'word' && (
-                        <p className="text-sm text-muted-foreground">Word Count: {pack.word_count}</p>
+                        <p className="text-sm text-muted-foreground">Количество слов: {pack.word_count}</p>
                       )}
                     </CardContent>
                   </div>
@@ -211,14 +211,14 @@ export function LessonDetail() {
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create Pack</DialogTitle>
+              <DialogTitle>Создать пакет</DialogTitle>
               <DialogDescription>
-                Create a new pack in this lesson
+                Создать новый пакет в этом уроке
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="title" className="text-right">Title</Label>
+                <Label htmlFor="title" className="text-right">Заголовок</Label>
                 <Input
                   id="title"
                   value={formData.title || ''}
@@ -227,20 +227,20 @@ export function LessonDetail() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="type" className="text-right">Type</Label>
+                <Label htmlFor="type" className="text-right">Тип</Label>
                 <select
                   id="type"
                   value={formData.type || 'word'}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                   className="col-span-3 px-3 py-2 border border-gray-300 rounded-md"
                 >
-                  <option value="word">Word</option>
-                  <option value="grammar">Grammar</option>
+                  <option value="word">Слово</option>
+                  <option value="grammar">Грамматика</option>
                 </select>
               </div>
             </div>
             <DialogFooter>
-              <Button onClick={createPack}>Create</Button>
+              <Button onClick={createPack}>Создать</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -249,14 +249,14 @@ export function LessonDetail() {
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Edit Pack</DialogTitle>
+              <DialogTitle>Редактировать пакет</DialogTitle>
               <DialogDescription>
-                Edit pack details
+                Редактировать детали пакета
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-title" className="text-right">Title</Label>
+                <Label htmlFor="edit-title" className="text-right">Заголовок</Label>
                 <Input
                   id="edit-title"
                   value={formData.title || ''}
@@ -265,20 +265,20 @@ export function LessonDetail() {
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-type" className="text-right">Type</Label>
+                <Label htmlFor="edit-type" className="text-right">Тип</Label>
                 <select
                   id="edit-type"
                   value={formData.type || 'word'}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                   className="col-span-3 px-3 py-2 border border-gray-300 rounded-md"
                 >
-                  <option value="word">Word</option>
-                  <option value="grammar">Grammar</option>
+                  <option value="word">Слово</option>
+                  <option value="grammar">Грамматика</option>
                 </select>
               </div>
             </div>
             <DialogFooter>
-              <Button onClick={updatePack}>Update</Button>
+              <Button onClick={updatePack}>Обновить</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

@@ -62,8 +62,8 @@ export function GrammarTopicPage() {
         }
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to fetch data'
-      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to fetch data')
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Не удалось загрузить данные'
+      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Не удалось загрузить данные')
       navigate({ to: `/education/${moduleId}/${lessonId}/${packId}` })
     } finally {
       setLoading(false)
@@ -80,10 +80,10 @@ export function GrammarTopicPage() {
       })
       setTopic(response.data)
       setIsEditing(false)
-      toast.success('Grammar topic created successfully')
+      toast.success('Тема по грамматике успешно создана')
     } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to create topic'
-      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to create topic')
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Не удалось создать тему'
+      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Не удалось создать тему')
     } finally {
       setSaving(false)
     }
@@ -98,10 +98,10 @@ export function GrammarTopicPage() {
       })
       setTopic(response.data)
       setIsEditing(false)
-      toast.success('Grammar topic updated successfully')
+      toast.success('Тема по грамматике успешно обновлена')
     } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to update topic'
-      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to update topic')
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Не удалось обновить тему'
+      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Не удалось обновить тему')
     } finally {
       setSaving(false)
     }
@@ -110,11 +110,11 @@ export function GrammarTopicPage() {
   const deleteTopic = async () => {
     try {
       await grammarTopicsApi.delete(topic!.id)
-      toast.success('Grammar topic deleted successfully')
+      toast.success('Тема по грамматике успешно удалена')
       navigate({ to: `/education/${moduleId}/${lessonId}/${packId}` })
     } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to delete topic'
-      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to delete topic')
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Не удалось удалить тему'
+      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Не удалось удалить тему')
     }
   }
 
@@ -139,7 +139,7 @@ export function GrammarTopicPage() {
   }
 
   if (loading) {
-    return <div className="flex justify-center p-8">Loading grammar topic...</div>
+    return <div className="flex justify-center p-8">Загрузка темы по грамматике...</div>
   }
 
   return (
@@ -147,7 +147,7 @@ export function GrammarTopicPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            {topic ? 'Edit' : 'Create'} Grammar Topic
+            {topic ? 'Редактировать' : 'Создать'} тему по грамматике
           </h1>
           <p className="text-muted-foreground">
             {pack?.title} • Educational Content
@@ -157,7 +157,7 @@ export function GrammarTopicPage() {
           {topic && !isEditing && (
             <Button variant="outline" onClick={() => setIsEditing(true)}>
               <Edit className="h-4 w-4 mr-2" />
-              Edit
+              Редактировать
             </Button>
           )}
           {topic && (
@@ -165,26 +165,26 @@ export function GrammarTopicPage() {
               <AlertDialogTrigger asChild>
                 <Button variant="destructive">
                   <Trash2 className="h-4 w-4 mr-2" />
-                  Delete
+                  Удалить
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Delete Grammar Topic</AlertDialogTitle>
+                  <AlertDialogTitle>Удалить тему по грамматике</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Are you sure you want to delete this grammar topic? This action cannot be undone.
+                    Вы уверены, что хотите удалить эту тему по грамматике? Это действие невозможно отменить.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={deleteTopic}>Delete</AlertDialogAction>
+                  <AlertDialogCancel>Отмена</AlertDialogCancel>
+                  <AlertDialogAction onClick={deleteTopic}>Удалить</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
           )}
           <Button variant="outline" onClick={() => navigate({ to: `/education/${moduleId}/${lessonId}/${packId}` })}>
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Pack
+            Назад к пакету
           </Button>
         </div>
       </div>
@@ -194,7 +194,7 @@ export function GrammarTopicPage() {
           <Card className="p-6">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="video_url">Video URL</Label>
+                <Label htmlFor="video_url">URL видео</Label>
                 <Input
                   id="video_url"
                   value={formData.video_url}
@@ -202,12 +202,12 @@ export function GrammarTopicPage() {
                   placeholder="https://t.me/channel/video_file_id"
                 />
                 <p className="text-xs text-muted-foreground">
-                  Telegram video file URL for the educational content
+                  URL видеофайла Telegram для образовательного контента
                 </p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="markdown_content">Educational Content</Label>
+                <Label htmlFor="markdown_content">Образовательный контент</Label>
                 <MarkdownEditor
                   value={formData.markdown_text}
                   onChange={(value) => setFormData({ ...formData, markdown_text: value })}
@@ -236,11 +236,11 @@ Key takeaways from this lesson`}
 
           <div className="flex items-center justify-between">
             <Button variant="outline" onClick={handleCancel}>
-              Cancel
+              Отмена
             </Button>
             <Button onClick={handleSave} disabled={saving || !formData.video_url || !formData.markdown_text.trim()}>
               <Save className="h-4 w-4 mr-2" />
-              {saving ? 'Saving...' : topic ? 'Update Topic' : 'Create Topic'}
+              {saving ? 'Сохранение...' : topic ? 'Обновить тему' : 'Создать тему'}
             </Button>
           </div>
         </div>
@@ -249,11 +249,11 @@ Key takeaways from this lesson`}
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="preview" className="flex items-center gap-2">
               <Eye className="h-4 w-4" />
-              Preview
+              Предпросмотр
             </TabsTrigger>
             <TabsTrigger value="raw" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
-              Raw Content
+              Исходный контент
             </TabsTrigger>
           </TabsList>
           
@@ -261,12 +261,12 @@ Key takeaways from this lesson`}
             <Card className="p-6">
               <div className="space-y-4">
                 <div>
-                  <Label className="text-sm font-medium">Video URL</Label>
+                  <Label className="text-sm font-medium">URL видео</Label>
                   <p className="mt-1 text-sm text-muted-foreground break-all">{topic.video_url}</p>
                 </div>
                 
                 <div>
-                  <Label className="text-sm font-medium">Educational Content</Label>
+                  <Label className="text-sm font-medium">Образовательный контент</Label>
                   <div className="mt-2 border rounded-md p-6 bg-background">
                     {topic.markdown_text ? (
                       <div className="prose prose-sm max-w-none dark:prose-invert">
@@ -275,21 +275,21 @@ Key takeaways from this lesson`}
                         </ReactMarkdown>
                       </div>
                     ) : (
-                      <p className="text-muted-foreground italic text-center py-8">No content added yet</p>
+                      <p className="text-muted-foreground italic text-center py-8">Контент ещё не добавлен</p>
                     )}
                   </div>
                 </div>
 
                 <div className="text-xs text-muted-foreground pt-4 border-t">
                   <div className="flex items-center justify-between">
-                    <span>Created: {new Date(topic.created_at).toLocaleString()}</span>
+                    <span>Создан: {new Date(topic.created_at).toLocaleString()}</span>
                     {topic.updated_at !== topic.created_at && (
-                      <span>Updated: {new Date(topic.updated_at).toLocaleString()}</span>
+                      <span>Обновлён: {new Date(topic.updated_at).toLocaleString()}</span>
                     )}
                   </div>
                   <div className="flex items-center gap-4 mt-2">
-                    <span>{topic.markdown_text?.length || 0} characters</span>
-                    <span>{(topic.markdown_text?.split(/\s+/).filter(word => word.length > 0).length || 0)} words</span>
+                    <span>{topic.markdown_text?.length || 0} символов</span>
+                    <span>{(topic.markdown_text?.split(/\s+/).filter(word => word.length > 0).length || 0)} слов</span>
                   </div>
                 </div>
               </div>
@@ -300,17 +300,17 @@ Key takeaways from this lesson`}
             <Card className="p-6">
               <div className="space-y-4">
                 <div>
-                  <Label className="text-sm font-medium">Video URL</Label>
+                  <Label className="text-sm font-medium">URL видео</Label>
                   <p className="mt-1 text-sm text-muted-foreground break-all">{topic.video_url}</p>
                 </div>
                 
                 <div>
-                  <Label className="text-sm font-medium">Raw Markdown Content</Label>
+                  <Label className="text-sm font-medium">Исходный Markdown контент</Label>
                   <div className="mt-2 border rounded-md p-4 bg-muted/30 max-h-96 overflow-y-auto">
                     {topic.markdown_text ? (
                       <pre className="whitespace-pre-wrap font-mono text-sm">{topic.markdown_text}</pre>
                     ) : (
-                      <p className="text-muted-foreground italic text-center py-8">No content added yet</p>
+                      <p className="text-muted-foreground italic text-center py-8">Контент ещё не добавлен</p>
                     )}
                   </div>
                 </div>

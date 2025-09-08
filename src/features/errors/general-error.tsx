@@ -18,16 +18,16 @@ export function GeneralError({
         {!minimal && (
           <h1 className='text-[7rem] leading-tight font-bold'>500</h1>
         )}
-        <span className='font-medium'>Oops! Something went wrong {`:')`}</span>
+        <span className='font-medium'>Ой! Что-то пошло не так {`:')`}</span>
         <p className='text-muted-foreground text-center'>
-          We apologize for the inconvenience. <br /> Please try again later.
+          Мы извиняемся за неудобства. <br /> Пожалуйста, попробуйте позже.
         </p>
         {!minimal && (
           <div className='mt-6 flex gap-4'>
             <Button variant='outline' onClick={() => history.go(-1)}>
-              Go Back
+              Назад
             </Button>
-            <Button onClick={() => navigate({ to: '/' })}>Back to Home</Button>
+            <Button onClick={() => navigate({ to: '/' })}>На главную</Button>
           </div>
         )}
       </div>

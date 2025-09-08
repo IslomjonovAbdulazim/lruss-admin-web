@@ -30,7 +30,7 @@ function LessonLayout() {
       const moduleResponse = await educationApi.getModuleWithLessons(parseInt(moduleId as string))
       setModule(moduleResponse.data)
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to fetch lesson')
+      toast.error(error.response?.data?.detail || 'Не удалось загрузить урок')
       navigate({ to: `/education/${moduleId}` })
     } finally {
       setLoading(false)
@@ -41,17 +41,17 @@ function LessonLayout() {
     <>
       <div className='mb-4 flex items-center justify-between'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>{lesson?.title || 'Lesson'}</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>{lesson?.title || 'Урок'}</h1>
           <p className='text-muted-foreground'>{module?.title} &gt; {lesson?.title}</p>
         </div>
         <Button variant="outline" onClick={() => navigate({ to: `/education/${moduleId}` })}>
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Lessons
+          Назад к урокам
         </Button>
       </div>
 
       {loading ? (
-        <div className="flex justify-center p-8">Loading...</div>
+        <div className="flex justify-center p-8">Загрузка...</div>
       ) : (
         <Outlet />
       )}

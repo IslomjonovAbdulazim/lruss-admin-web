@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
-import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { educationApi, quizApi, type Module, type Lesson, type Pack, type Word, type Grammar } from '@/lib/api'
@@ -51,7 +50,7 @@ export function Education() {
     } catch (error: any) {
       const errorMessage = typeof error.response?.data?.detail === 'string' 
         ? error.response.data.detail 
-        : 'Failed to fetch modules'
+        : 'Не удалось загрузить модули'
       toast.error(errorMessage)
     } finally {
       setLoading(false)
@@ -68,7 +67,7 @@ export function Education() {
     } catch (error: any) {
       const errorMessage = typeof error.response?.data?.detail === 'string' 
         ? error.response.data.detail 
-        : 'Failed to fetch lessons'
+        : 'Не удалось загрузить уроки'
       toast.error(errorMessage)
     } finally {
       setLoading(false)
@@ -83,7 +82,7 @@ export function Education() {
       setPacks(response.data.packs || [])
       setCurrentLevel('packs')
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to fetch packs')
+      toast.error(error.response?.data?.detail || 'Не удалось загрузить пакеты')
     } finally {
       setLoading(false)
     }
@@ -100,13 +99,13 @@ export function Education() {
       } else if (pack.type === 'grammar') {
         setGrammar([])
         setWords([])
-        toast.info('Grammar viewing not available - no backend endpoint')
+        toast.info('Просмотр грамматики недоступен - нет эндпоинта бэкенда')
       }
       setCurrentLevel('content')
     } catch (error: any) {
       const errorMessage = typeof error.response?.data?.detail === 'string' 
         ? error.response.data.detail 
-        : 'Failed to fetch content'
+        : 'Не удалось загрузить контент'
       toast.error(errorMessage)
     } finally {
       setLoading(false)
@@ -127,7 +126,7 @@ export function Education() {
   }
 
   const getBreadcrumb = () => {
-    const parts = ['Modules']
+    const parts = ['Модули']
     if (selectedModule) parts.push(selectedModule.title)
     if (selectedLesson) parts.push(selectedLesson.title)
     if (selectedPack) parts.push(selectedPack.title)
@@ -138,105 +137,105 @@ export function Education() {
   const createModule = async () => {
     try {
       await educationApi.createModule(formData)
-      toast.success('Module created successfully')
+      toast.success('Модуль успешно создан')
       setIsCreateDialogOpen(false)
       setFormData({})
       fetchModules()
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to create module')
+      toast.error(error.response?.data?.detail || 'Не удалось создать модуль')
     }
   }
 
   const updateModule = async () => {
     try {
       await educationApi.updateModule(editingItem.id, formData)
-      toast.success('Module updated successfully')
+      toast.success('Модуль успешно обновлён')
       setIsEditDialogOpen(false)
       setEditingItem(null)
       setFormData({})
       fetchModules()
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to update module')
+      toast.error(error.response?.data?.detail || 'Не удалось обновить модуль')
     }
   }
 
   const deleteModule = async (moduleId: number) => {
     try {
       await educationApi.deleteModule(moduleId)
-      toast.success('Module deleted successfully')
+      toast.success('Модуль успешно удалён')
       fetchModules()
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to delete module')
+      toast.error(error.response?.data?.detail || 'Не удалось удалить модуль')
     }
   }
 
   const createLesson = async () => {
     try {
       await educationApi.createLesson({ ...formData, module_id: selectedModule!.id })
-      toast.success('Lesson created successfully')
+      toast.success('Урок успешно создан')
       setIsCreateDialogOpen(false)
       setFormData({})
       if (selectedModule) selectModule(selectedModule)
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to create lesson')
+      toast.error(error.response?.data?.detail || 'Не удалось создать урок')
     }
   }
 
   const updateLesson = async () => {
     try {
       await educationApi.updateLesson(editingItem.id, formData)
-      toast.success('Lesson updated successfully')
+      toast.success('Урок успешно обновлён')
       setIsEditDialogOpen(false)
       setEditingItem(null)
       setFormData({})
       if (selectedModule) selectModule(selectedModule)
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to update lesson')
+      toast.error(error.response?.data?.detail || 'Не удалось обновить урок')
     }
   }
 
   const deleteLesson = async (lessonId: number) => {
     try {
       await educationApi.deleteLesson(lessonId)
-      toast.success('Lesson deleted successfully')
+      toast.success('Урок успешно удалён')
       if (selectedModule) selectModule(selectedModule)
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to delete lesson')
+      toast.error(error.response?.data?.detail || 'Не удалось удалить урок')
     }
   }
 
   const createPack = async () => {
     try {
       await educationApi.createPack({ ...formData, lesson_id: selectedLesson!.id })
-      toast.success('Pack created successfully')
+      toast.success('Пакет успешно создан')
       setIsCreateDialogOpen(false)
       setFormData({})
       if (selectedLesson) selectLesson(selectedLesson)
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to create pack')
+      toast.error(error.response?.data?.detail || 'Не удалось создать пакет')
     }
   }
 
   const updatePack = async () => {
     try {
       await educationApi.updatePack(editingItem.id, formData)
-      toast.success('Pack updated successfully')
+      toast.success('Пакет успешно обновлён')
       setIsEditDialogOpen(false)
       setEditingItem(null)
       setFormData({})
       if (selectedLesson) selectLesson(selectedLesson)
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to update pack')
+      toast.error(error.response?.data?.detail || 'Не удалось обновить пакет')
     }
   }
 
   const deletePack = async (packId: number) => {
     try {
       await educationApi.deletePack(packId)
-      toast.success('Pack deleted successfully')
+      toast.success('Пакет успешно удалён')
       if (selectedLesson) selectLesson(selectedLesson)
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to delete pack')
+      toast.error(error.response?.data?.detail || 'Не удалось удалить пакет')
     }
   }
 
@@ -258,17 +257,17 @@ export function Education() {
   }
 
   const getCreateTitle = () => {
-    if (currentLevel === 'modules') return 'Create Module'
-    if (currentLevel === 'lessons') return 'Create Lesson'
-    if (currentLevel === 'packs') return 'Create Pack'
-    return 'Create Item'
+    if (currentLevel === 'modules') return 'Создать модуль'
+    if (currentLevel === 'lessons') return 'Создать урок'
+    if (currentLevel === 'packs') return 'Создать пакет'
+    return 'Создать элемент'
   }
 
   const getEditTitle = () => {
-    if (currentLevel === 'modules') return 'Edit Module'
-    if (currentLevel === 'lessons') return 'Edit Lesson'
-    if (currentLevel === 'packs') return 'Edit Pack'
-    return 'Edit Item'
+    if (currentLevel === 'modules') return 'Редактировать модуль'
+    if (currentLevel === 'lessons') return 'Редактировать урок'
+    if (currentLevel === 'packs') return 'Редактировать пакет'
+    return 'Редактировать элемент'
   }
 
   const handleCreate = () => {
@@ -296,34 +295,33 @@ export function Education() {
         <div className='ms-auto flex items-center space-x-4'>
           <ThemeSwitch />
           <ConfigDrawer />
-          <ProfileDropdown />
         </div>
       </Header>
 
       <Main>
         <div className='mb-4 flex items-center justify-between'>
           <div>
-            <h1 className='text-2xl font-bold tracking-tight'>Education Management</h1>
+            <h1 className='text-2xl font-bold tracking-tight'>Управление образованием</h1>
             <p className='text-muted-foreground'>{getBreadcrumb()}</p>
           </div>
           <div className="flex items-center gap-2">
             {currentLevel !== 'content' && (
               <Button onClick={openCreateDialog}>
                 <Plus className="h-4 w-4 mr-2" />
-                Add {currentLevel === 'modules' ? 'Module' : currentLevel === 'lessons' ? 'Lesson' : 'Pack'}
+                Добавить {currentLevel === 'modules' ? 'Модуль' : currentLevel === 'lessons' ? 'Урок' : 'Пакет'}
               </Button>
             )}
             {currentLevel !== 'modules' && (
               <Button variant="outline" onClick={goBack}>
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back
+                Назад
               </Button>
             )}
           </div>
         </div>
 
         {loading ? (
-          <div className="flex justify-center p-8">Loading...</div>
+          <div className="flex justify-center p-8">Загрузка...</div>
         ) : (
           <>
             {currentLevel === 'modules' && (
@@ -342,14 +340,14 @@ export function Education() {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Module</AlertDialogTitle>
+                            <AlertDialogTitle>Удалить модуль</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Are you sure you want to delete "{module.title}"? This will also delete all lessons and packs within this module.
+                              Вы уверены, что хотите удалить "{module.title}"? Это также удалит все уроки и пакеты в этом модуле.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDelete(module.id)}>Delete</AlertDialogAction>
+                            <AlertDialogCancel>Отмена</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(module.id)}>Удалить</AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
@@ -365,9 +363,9 @@ export function Education() {
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-sm text-muted-foreground">Order: {module.order}</p>
+                        <p className="text-sm text-muted-foreground">Порядок: {module.order}</p>
                         <p className="text-xs text-muted-foreground mt-2">
-                          Created: {new Date(module.created_at).toLocaleDateString()}
+                          Создан: {new Date(module.created_at).toLocaleDateString()}
                         </p>
                       </CardContent>
                     </div>
@@ -392,14 +390,14 @@ export function Education() {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Lesson</AlertDialogTitle>
+                            <AlertDialogTitle>Удалить урок</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Are you sure you want to delete "{lesson.title}"? This will also delete all packs within this lesson.
+                              Вы уверены, что хотите удалить "{lesson.title}"? Это также удалит все пакеты в этом уроке.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDelete(lesson.id)}>Delete</AlertDialogAction>
+                            <AlertDialogCancel>Отмена</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(lesson.id)}>Удалить</AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
@@ -416,7 +414,7 @@ export function Education() {
                       </CardHeader>
                       <CardContent>
                         <p className="text-sm mb-2">{lesson.description}</p>
-                        <p className="text-sm text-muted-foreground">Order: {lesson.order}</p>
+                        <p className="text-sm text-muted-foreground">Порядок: {lesson.order}</p>
                       </CardContent>
                     </div>
                   </Card>
@@ -440,14 +438,14 @@ export function Education() {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Pack</AlertDialogTitle>
+                            <AlertDialogTitle>Удалить пакет</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Are you sure you want to delete "{pack.title}"? This will also delete all words and grammar questions within this pack.
+                              Вы уверены, что хотите удалить "{pack.title}"? Это также удалит все слова и вопросы по грамматике в этом пакете.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDelete(pack.id)}>Delete</AlertDialogAction>
+                            <AlertDialogCancel>Отмена</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(pack.id)}>Удалить</AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
@@ -463,8 +461,8 @@ export function Education() {
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-sm text-muted-foreground">Type: {pack.type}</p>
-                        <p className="text-sm text-muted-foreground">Word Count: {pack.word_count}</p>
+                        <p className="text-sm text-muted-foreground">Тип: {pack.type}</p>
+                        <p className="text-sm text-muted-foreground">Количество слов: {pack.word_count}</p>
                       </CardContent>
                     </div>
                   </Card>
@@ -481,7 +479,7 @@ export function Education() {
                     <Brain className="h-5 w-5 mr-2" />
                   )}
                   <h2 className="text-xl font-semibold">
-                    {selectedPack.type === 'word' ? 'Words' : 'Grammar Questions'}
+                    {selectedPack.type === 'word' ? 'Слова' : 'Вопросы по грамматике'}
                   </h2>
                 </div>
 
@@ -493,10 +491,10 @@ export function Education() {
                           <CardTitle className="text-lg">{word.ru_text}</CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <p className="text-sm"><strong>Uzbek:</strong> {word.uz_text}</p>
+                          <p className="text-sm"><strong>Узбекский:</strong> {word.uz_text}</p>
                           {word.audio_url && (
                             <p className="text-xs text-muted-foreground mt-2">
-                              Audio: {word.audio_url}
+                              Аудио: {word.audio_url}
                             </p>
                           )}
                         </CardContent>
@@ -509,18 +507,18 @@ export function Education() {
                       <Card key={item.id}>
                         <CardHeader>
                           <CardTitle className="text-sm">
-                            {item.type.toUpperCase()} Question
+                            {item.type.toUpperCase()} Вопрос
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
                           {item.type === 'fill' ? (
                             <>
-                              <p className="text-sm mb-2"><strong>Question:</strong> {item.question_text}</p>
-                              <p className="text-sm mb-2"><strong>Options:</strong> {item.options?.join(', ')}</p>
-                              <p className="text-sm"><strong>Correct:</strong> {item.correct_option}</p>
+                              <p className="text-sm mb-2"><strong>Вопрос:</strong> {item.question_text}</p>
+                              <p className="text-sm mb-2"><strong>Варианты:</strong> {item.options?.join(', ')}</p>
+                              <p className="text-sm"><strong>Правильный:</strong> {item.correct_option}</p>
                             </>
                           ) : (
-                            <p className="text-sm"><strong>Sentence:</strong> {item.sentence}</p>
+                            <p className="text-sm"><strong>Предложение:</strong> {item.sentence}</p>
                           )}
                         </CardContent>
                       </Card>
@@ -538,12 +536,12 @@ export function Education() {
             <DialogHeader>
               <DialogTitle>{getCreateTitle()}</DialogTitle>
               <DialogDescription>
-                Create a new {currentLevel === 'modules' ? 'module' : currentLevel === 'lessons' ? 'lesson' : 'pack'}
+                Создать новый {currentLevel === 'modules' ? 'модуль' : currentLevel === 'lessons' ? 'урок' : 'пакет'}
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="title" className="text-right">Title</Label>
+                <Label htmlFor="title" className="text-right">Заголовок</Label>
                 <Input
                   id="title"
                   value={formData.title || ''}
@@ -553,7 +551,7 @@ export function Education() {
               </div>
               {currentLevel === 'lessons' && (
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="description" className="text-right">Description</Label>
+                  <Label htmlFor="description" className="text-right">Описание</Label>
                   <Textarea
                     id="description"
                     value={formData.description || ''}
@@ -563,7 +561,7 @@ export function Education() {
                 </div>
               )}
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="order" className="text-right">Order</Label>
+                <Label htmlFor="order" className="text-right">Порядок</Label>
                 <Input
                   id="order"
                   type="number"
@@ -575,19 +573,19 @@ export function Education() {
               {currentLevel === 'packs' && (
                 <>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="type" className="text-right">Type</Label>
+                    <Label htmlFor="type" className="text-right">Тип</Label>
                     <select
                       id="type"
                       value={formData.type || 'word'}
                       onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                       className="col-span-3 px-3 py-2 border border-gray-300 rounded-md"
                     >
-                      <option value="word">Word</option>
-                      <option value="grammar">Grammar</option>
+                      <option value="word">Слово</option>
+                      <option value="grammar">Грамматика</option>
                     </select>
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="word_count" className="text-right">Word Count</Label>
+                    <Label htmlFor="word_count" className="text-right">Количество слов</Label>
                     <Input
                       id="word_count"
                       type="number"
@@ -600,7 +598,7 @@ export function Education() {
               )}
             </div>
             <DialogFooter>
-              <Button onClick={handleCreate}>Create</Button>
+              <Button onClick={handleCreate}>Создать</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -611,12 +609,12 @@ export function Education() {
             <DialogHeader>
               <DialogTitle>{getEditTitle()}</DialogTitle>
               <DialogDescription>
-                Edit {currentLevel === 'modules' ? 'module' : currentLevel === 'lessons' ? 'lesson' : 'pack'} details
+                Редактировать {currentLevel === 'modules' ? 'модуль' : currentLevel === 'lessons' ? 'урок' : 'пакет'} детали
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-title" className="text-right">Title</Label>
+                <Label htmlFor="edit-title" className="text-right">Заголовок</Label>
                 <Input
                   id="edit-title"
                   value={formData.title || ''}
@@ -627,7 +625,7 @@ export function Education() {
               {currentLevel === 'lessons' && (
                 <>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="edit-description" className="text-right">Description</Label>
+                    <Label htmlFor="edit-description" className="text-right">Описание</Label>
                     <Textarea
                       id="edit-description"
                       value={formData.description || ''}
@@ -636,7 +634,7 @@ export function Education() {
                     />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="edit-lesson-order" className="text-right">Order</Label>
+                    <Label htmlFor="edit-lesson-order" className="text-right">Порядок</Label>
                     <Input
                       id="edit-lesson-order"
                       type="number"
@@ -649,7 +647,7 @@ export function Education() {
               )}
               {currentLevel === 'modules' && (
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="edit-order" className="text-right">Order</Label>
+                  <Label htmlFor="edit-order" className="text-right">Порядок</Label>
                   <Input
                     id="edit-order"
                     type="number"
@@ -662,19 +660,19 @@ export function Education() {
               {currentLevel === 'packs' && (
                 <>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="edit-type" className="text-right">Type</Label>
+                    <Label htmlFor="edit-type" className="text-right">Тип</Label>
                     <select
                       id="edit-type"
                       value={formData.type || 'word'}
                       onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                       className="col-span-3 px-3 py-2 border border-gray-300 rounded-md"
                     >
-                      <option value="word">Word</option>
-                      <option value="grammar">Grammar</option>
+                      <option value="word">Слово</option>
+                      <option value="grammar">Грамматика</option>
                     </select>
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="edit-word_count" className="text-right">Word Count</Label>
+                    <Label htmlFor="edit-word_count" className="text-right">Количество слов</Label>
                     <Input
                       id="edit-word_count"
                       type="number"
@@ -687,7 +685,7 @@ export function Education() {
               )}
             </div>
             <DialogFooter>
-              <Button onClick={handleUpdate}>Update</Button>
+              <Button onClick={handleUpdate}>Обновить</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

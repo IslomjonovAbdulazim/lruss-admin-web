@@ -22,7 +22,7 @@ function ModuleLayout() {
       const response = await educationApi.getModuleWithLessons(parseInt(moduleId))
       setModule(response.data)
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Failed to fetch module')
+      toast.error(error.response?.data?.detail || 'Не удалось загрузить модуль')
       navigate({ to: '/education' })
     } finally {
       setLoading(false)
@@ -33,17 +33,17 @@ function ModuleLayout() {
     <>
       <div className='mb-4 flex items-center justify-between'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>{module?.title || 'Module'}</h1>
-          <p className='text-muted-foreground'>Module &gt; {module?.title}</p>
+          <h1 className='text-2xl font-bold tracking-tight'>{module?.title || 'Модуль'}</h1>
+          <p className='text-muted-foreground'>Модуль &gt; {module?.title}</p>
         </div>
         <Button variant="outline" onClick={() => navigate({ to: '/education' })}>
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Modules
+          Назад к модулям
         </Button>
       </div>
 
       {loading ? (
-        <div className="flex justify-center p-8">Loading...</div>
+        <div className="flex justify-center p-8">Загрузка...</div>
       ) : (
         <Outlet />
       )}

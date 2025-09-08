@@ -2,7 +2,6 @@ import { useEffect, useState, useMemo } from 'react'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
-import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { Card } from '@/components/ui/card'
@@ -73,7 +72,7 @@ export function Users() {
         
         setUsers(usersWithSubscriptions)
       } catch (error: any) {
-        toast.error(error.response?.data?.detail || 'Failed to fetch users')
+        toast.error(error.response?.data?.detail || 'Не удалось загрузить пользователей')
       } finally {
         setLoading(false)
       }
@@ -88,7 +87,6 @@ export function Users() {
         <div className='ms-auto flex items-center space-x-4'>
           <ThemeSwitch />
           <ConfigDrawer />
-          <ProfileDropdown />
         </div>
       </Header>
 
@@ -98,11 +96,11 @@ export function Users() {
             <div>
               <h2 className='text-2xl font-bold tracking-tight flex items-center gap-2'>
                 <UsersIcon className="h-6 w-6" />
-                Users
+                Пользователи
               </h2>
               <p className='text-muted-foreground text-sm'>
-                {filteredUsers.length} of {users.length} users
-                {searchQuery && ` matching "${searchQuery}"`}
+                {filteredUsers.length} из {users.length} пользователей
+                {searchQuery && ` соответствующих "${searchQuery}"`}
               </p>
             </div>
             <div className='flex items-center gap-2'>
@@ -113,14 +111,14 @@ export function Users() {
                 className='h-8'
               >
                 <Crown className='h-3 w-3 mr-1' />
-                {showPremiumOnly ? 'All Users' : 'Premium Only'}
+                {showPremiumOnly ? 'Все пользователи' : 'Только Premium'}
               </Button>
             </div>
           </div>
           <div className='relative mb-2'>
             <SearchIcon className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
             <Input
-              placeholder='Search users by name or phone number...'
+              placeholder='Поиск пользователей по имени или номеру телефона...'
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className='pl-9 pr-10 h-9'
@@ -142,25 +140,25 @@ export function Users() {
             <div className="flex justify-center p-8">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
-                Loading users...
+                Загрузка пользователей...
               </div>
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
-                  <TableHead className="w-12">Avatar</TableHead>
-                  <TableHead>Name</TableHead>
+                  <TableHead className="w-12">Аватар</TableHead>
+                  <TableHead>Имя</TableHead>
                   <TableHead className="hidden md:table-cell">
                     <div className="flex items-center gap-1">
                       <Phone className="h-3 w-3" />
-                      Phone
+                      Телефон
                     </div>
                   </TableHead>
                   <TableHead className="hidden lg:table-cell">
                     <div className="flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
-                      Joined
+                      Присоединился
                     </div>
                   </TableHead>
                   <TableHead className="text-right">
@@ -180,13 +178,13 @@ export function Users() {
                         <div>
                           {searchQuery || showPremiumOnly ? (
                             <>
-                              <div className="font-medium">No users match your filters</div>
-                              <div className="text-sm">Try adjusting your search or filters</div>
+                              <div className="font-medium">Нет пользователей, соответствующих фильтрам</div>
+                              <div className="text-sm">Попробуйте скорректировать поиск или фильтры</div>
                             </>
                           ) : (
                             <>
-                              <div className="font-medium">No users found</div>
-                              <div className="text-sm">Users will appear here once they register</div>
+                              <div className="font-medium">Пользователи не найдены</div>
+                              <div className="text-sm">Пользователи появятся здесь после регистрации</div>
                             </>
                           )}
                         </div>
@@ -217,7 +215,7 @@ export function Users() {
                         <TableCell className="py-2">
                           <div>
                             <div className="font-medium text-sm flex items-center gap-2">
-                              {fullName || 'Unknown'}
+                              {fullName || 'Неизвестно'}
                               {user.has_active_subscription && (
                                 <Crown className="h-3 w-3 text-amber-500" />
                               )}
@@ -254,7 +252,7 @@ export function Users() {
                                 <span className={`text-xs ${
                                   isExpiringSoon ? 'text-amber-600 font-medium' : 'text-muted-foreground'
                                 }`}>
-                                  Until {subscriptionEndDate.toLocaleDateString('en-US', { 
+                                  До {subscriptionEndDate.toLocaleDateString('ru-RU', { 
                                     month: 'short', 
                                     day: 'numeric' 
                                   })}
@@ -263,7 +261,7 @@ export function Users() {
                             </div>
                           ) : (
                             <Badge variant="secondary" className="text-xs">
-                              Free
+                              Бесплатно
                             </Badge>
                           )}
                         </TableCell>

@@ -1,6 +1,5 @@
 import {
   LayoutDashboard,
-  Monitor,
   Palette,
   Settings,
   Users,
@@ -12,59 +11,54 @@ import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
   user: {
-    name: 'Admin',
+    name: 'Администратор',
     email: 'admin@lruss.com',
     avatar: '/avatars/admin.jpg',
   },
   teams: [
     {
-      name: 'LRuss Admin',
+      name: 'LRuss Админ',
       logo: Command,
-      plan: 'Education Platform',
+      plan: 'Образовательная платформа',
     },
   ],
   navGroups: [
     {
-      title: 'Management',
+      title: 'Управление',
       items: [
         {
-          title: 'Dashboard',
+          title: 'Панель управления',
           url: '/',
           icon: LayoutDashboard,
         },
         {
-          title: 'Users',
+          title: 'Пользователи',
           url: '/users',
           icon: Users,
         },
         {
-          title: 'Education',
+          title: 'Образование',
           url: '/education',
           icon: GraduationCap,
         },
         {
-          title: 'Subscriptions',
+          title: 'Подписки',
           url: '/subscriptions',
           icon: CreditCard,
         },
       ],
     },
     {
-      title: 'Settings',
+      title: 'Настройки',
       items: [
         {
-          title: 'Settings',
+          title: 'Настройки',
           icon: Settings,
           items: [
             {
-              title: 'Appearance',
+              title: 'Внешний вид',
               url: '/settings/appearance',
               icon: Palette,
-            },
-            {
-              title: 'Display',
-              url: '/settings/display',
-              icon: Monitor,
             },
           ],
         },

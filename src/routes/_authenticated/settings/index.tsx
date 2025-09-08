@@ -1,5 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Navigate } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/settings/')({
-  component: () => <div>Settings - Use the sidebar to navigate to specific settings</div>,
+  component: () => <Navigate to="/settings/appearance" />,
 })

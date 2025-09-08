@@ -94,17 +94,17 @@ function EducationModules() {
     <>
       <div className='mb-4 flex items-center justify-between'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Education Management</h1>
-          <p className='text-muted-foreground'>Modules</p>
+          <h1 className='text-2xl font-bold tracking-tight'>Управление образованием</h1>
+          <p className='text-muted-foreground'>Модули</p>
         </div>
         <Button onClick={openCreateDialog}>
           <Plus className="h-4 w-4 mr-2" />
-          Add Module
+          Добавить модуль
         </Button>
       </div>
 
       {loading ? (
-        <div className="flex justify-center p-8">Loading...</div>
+        <div className="flex justify-center p-8">Загрузка...</div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {modules.map((module) => (
@@ -121,14 +121,14 @@ function EducationModules() {
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Delete Module</AlertDialogTitle>
+                      <AlertDialogTitle>Удалить модуль</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Are you sure you want to delete "{module.title}"? This will also delete all lessons and packs within this module.
+                        Вы уверены, что хотите удалить "{module.title}"? Это также удалит все уроки и пакеты в этом модуле.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => deleteModule(module.id)}>Delete</AlertDialogAction>
+                      <AlertDialogCancel>Отмена</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => deleteModule(module.id)}>Удалить</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
@@ -144,9 +144,9 @@ function EducationModules() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">Order: {module.order}</p>
+                  <p className="text-sm text-muted-foreground">Порядок: {module.order}</p>
                   <p className="text-xs text-muted-foreground mt-2">
-                    Created: {new Date(module.created_at).toLocaleDateString()}
+                    Создан: {new Date(module.created_at).toLocaleDateString()}
                   </p>
                 </CardContent>
               </div>
@@ -159,14 +159,14 @@ function EducationModules() {
       <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Create Module</DialogTitle>
+            <DialogTitle>Создать модуль</DialogTitle>
             <DialogDescription>
-              Create a new module
+              Создать новый модуль
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="title" className="text-right">Title</Label>
+              <Label htmlFor="title" className="text-right">Заголовок</Label>
               <Input
                 id="title"
                 value={formData.title || ''}
@@ -175,7 +175,7 @@ function EducationModules() {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="order" className="text-right">Order</Label>
+              <Label htmlFor="order" className="text-right">Порядок</Label>
               <Input
                 id="order"
                 type="number"
@@ -186,7 +186,7 @@ function EducationModules() {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={createModule}>Create</Button>
+            <Button onClick={createModule}>Создать</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -195,14 +195,14 @@ function EducationModules() {
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Module</DialogTitle>
+            <DialogTitle>Редактировать модуль</DialogTitle>
             <DialogDescription>
-              Edit module details
+              Редактировать детали модуля
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="edit-title" className="text-right">Title</Label>
+              <Label htmlFor="edit-title" className="text-right">Заголовок</Label>
               <Input
                 id="edit-title"
                 value={formData.title || ''}
@@ -211,7 +211,7 @@ function EducationModules() {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="edit-order" className="text-right">Order</Label>
+              <Label htmlFor="edit-order" className="text-right">Порядок</Label>
               <Input
                 id="edit-order"
                 type="number"
@@ -222,7 +222,7 @@ function EducationModules() {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={updateModule}>Update</Button>
+            <Button onClick={updateModule}>Обновить</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
