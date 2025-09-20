@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { adminApi, subscriptionApi, type UserWithSubscription } from '@/lib/api'
 import { toast } from 'sonner'
-import { Users as UsersIcon, Phone, Calendar, Search as SearchIcon, X, Crown, Star, ExternalLink } from 'lucide-react'
+import { Users as UsersIcon, Phone, Calendar, Search as SearchIcon, X, Crown, Star } from 'lucide-react'
 
 const TelegramIcon = ({ className = "h-4 w-4" }: { className?: string }) => (
   <svg
