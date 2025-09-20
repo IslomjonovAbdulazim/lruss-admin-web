@@ -422,7 +422,7 @@ export function PackDetail() {
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-medium">Образовательный контент</span>
                       <span className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded">
-                        {grammarTopic.video_url.includes('t.me') ? 'Видео Telegram' : 'Видео'}
+                        {grammarTopic.video_url?.includes('t.me') ? 'Видео Telegram' : 'Видео'}
                       </span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1 truncate">
